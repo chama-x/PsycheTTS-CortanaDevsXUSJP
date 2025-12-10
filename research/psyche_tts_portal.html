@@ -308,33 +308,47 @@
                             root((PsycheTTS))
                             Problem
                             Cloud Latency
-                            >>1000ms<< Unusable for Real-time Data Scarcity No Sinhala Emotion Dataset Expensive to
-                                record Solution Knowledge Distillation Teacher: Gemini 2.5 Pro Student: BiMamba Model
-                                Efficiency Linear Time O(N) Edge Deployable </div>
+                            1000ms+ Latency
+                            Unusable for Real-time
+                            Data Scarcity
+                            No Sinhala Emotion Dataset
+                            Expensive to record
+                            Solution
+                            Knowledge Distillation
+                            Teacher Gemini 2.5 Pro
+                            Student BiMamba Model
+                            Efficiency
+                            Linear Time O(N)
+                            Edge Deployable
                         </div>
 
                         <!-- Diagram 2: Architecture -->
                         <div id="arch-diagram"
                             class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
                             <div class="mermaid">
+                                ---
+                                config:
+                                look: handDrawn
+                                theme: neutral
+                                ---
                                 graph TD
                                 %% Nodes
-                                IN_TEXT[("📄 Input Text\n(Sinhala)")]
-                                IN_REF[("🔊 Reference\n(Emotional Audio)")]
+                                IN_TEXT["📄 Input Text\n(Sinhala)"]
+                                IN_REF["🔊 Reference\n(Emotional Audio)"]
 
-                                subgraph "Encoders"
+                                subgraph Encoders
                                 IPA["🔤 IPA Phonemizer"]
                                 STYLE["🎼 Style Encoder\n(GST/VAE)"]
                                 end
 
-                                subgraph "PsycheTTS Core"
+                                subgraph Core["PsycheTTS Core"]
                                 MAMBA["🧠 Bi-Directional Mamba\n(Global Context O(N))"]
                                 FLOW["🌊 Flow Matching Decoder\n(Optimal Transport)"]
                                 end
 
-                                OUT_MEL[("📊 Mel Spectrogram")]
+                                OUT_MEL["📊 Mel Spectrogram"]
                                 VOCODER["🗣️ HiFi-GAN Vocoder"]
-                                OUT_WAV[("🎵 Output Waveform")]
+                                OUT_WAV["🎵 Output Waveform"]
 
                                 %% Edges
                                 IN_TEXT --> IPA --> MAMBA
