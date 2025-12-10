@@ -97,7 +97,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl">🧠</span>
+                    <i data-lucide="brain-circuit" class="text-blue-600 w-8 h-8"></i>
                     <span class="font-bold text-lg tracking-tight">PsycheTTS <span class="text-blue-600">Cortana
                             R&D</span></span>
                 </div>
@@ -197,9 +197,9 @@
             <!-- Process Diagram -->
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-16">
 
-                <div class="diagram-node border-blue-200 bg-blue-50">
+                <div class="diagram-node border-blue-200 bg-blue-50 flex flex-col items-center">
                     <div class="text-xs text-blue-500 uppercase font-bold mb-1">Source</div>
-                    <div class="text-xl mb-1">🤖</div>
+                    <i data-lucide="bot" class="w-8 h-8 text-blue-600 mb-1"></i>
                     <div>Gemini 2.5 Pro</div>
                     <div class="text-xs text-slate-400 mt-2">Generate "Ground Truth"</div>
                 </div>
@@ -208,9 +208,10 @@
                     <i data-lucide="arrow-right" class="w-8 h-8"></i>
                 </div>
 
-                <div class="diagram-node border-orange-200 bg-orange-50 ring-2 ring-orange-500 ring-offset-2">
+                <div
+                    class="diagram-node border-orange-200 bg-orange-50 ring-2 ring-orange-500 ring-offset-2 flex flex-col items-center">
                     <div class="text-xs text-orange-500 uppercase font-bold mb-1">Current Focus</div>
-                    <div class="text-xl mb-1">🛠️</div>
+                    <i data-lucide="wrench" class="w-8 h-8 text-orange-600 mb-1"></i>
                     <div>Collector CLI</div>
                     <div class="text-xs text-slate-400 mt-2">Filter & Label Data</div>
                 </div>
@@ -219,9 +220,9 @@
                     <i data-lucide="arrow-right" class="w-8 h-8"></i>
                 </div>
 
-                <div class="diagram-node border-slate-200 bg-white opacity-70">
+                <div class="diagram-node border-slate-200 bg-white opacity-70 flex flex-col items-center">
                     <div class="text-xs text-slate-500 uppercase font-bold mb-1">Future</div>
-                    <div class="text-xl mb-1">🧠</div>
+                    <i data-lucide="brain" class="w-8 h-8 text-slate-500 mb-1"></i>
                     <div>PsycheTTS Model</div>
                     <div class="text-xs text-slate-400 mt-2">Training Student</div>
                 </div>
@@ -366,7 +367,9 @@
             <div class="grid gap-4">
                 <!-- Audio Card 1 -->
                 <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
-                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-xl">😊</div>
+                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                        <i data-lucide="smile" class="w-6 h-6"></i>
+                    </div>
                     <div class="flex-1">
                         <h4 class="font-bold text-slate-800">Happy Sample 1</h4>
                         <p class="text-slate-500 text-xs truncate">"මම අද ගොඩක් සතුටින්!" (I am very happy today!)</p>
@@ -378,7 +381,9 @@
 
                 <!-- Audio Card 2 -->
                 <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
-                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-xl">😊</div>
+                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                        <i data-lucide="smile" class="w-6 h-6"></i>
+                    </div>
                     <div class="flex-1">
                         <h4 class="font-bold text-slate-800">Happy Sample 2</h4>
                         <p class="text-slate-500 text-xs truncate">"කොච්චර ලස්සන උදෑසනක්ද මේ!" (What a beautiful
@@ -391,7 +396,9 @@
 
                 <!-- Audio Card 3 -->
                 <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
-                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-xl">😢</div>
+                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                        <i data-lucide="frown" class="w-6 h-6"></i>
+                    </div>
                     <div class="flex-1">
                         <h4 class="font-bold text-slate-800">Sad Sample 1</h4>
                         <p class="text-slate-500 text-xs truncate">"මට අද ගොඩක් දුකයි." (I am very sad today.)</p>
@@ -403,7 +410,9 @@
 
                 <!-- Audio Card 4 -->
                 <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
-                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-xl">😢</div>
+                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                        <i data-lucide="frown" class="w-6 h-6"></i>
+                    </div>
                     <div class="flex-1">
                         <h4 class="font-bold text-slate-800">Sad Sample 2</h4>
                         <p class="text-slate-500 text-xs truncate">"කවුරුත් මාව තේරුම් ගන්නේ නැහැ." (No one understands
