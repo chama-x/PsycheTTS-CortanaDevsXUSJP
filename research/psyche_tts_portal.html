@@ -579,36 +579,186 @@
         };
         contextChart.setOption(contextOption);
 
-        // 2. Architecture Chart (Graph - Directed)
+        // 2. Architecture Chart (Graph - Directed - Detailed)
         const archChart = echarts.init(document.getElementById('chart-arch'));
+
+        // Define visual style constants
+        const colors = {
+            text: '#3b82f6',    // Blue
+            audio: '#f59e0b',   // Amber
+            core: '#8b5cf6',    // Violet
+            decoder: '#ec4899', // Pink
+            output: '#10b981',  // Green
+            neutral: '#94a3b8'  // Slate
+        };
+
         const archOption = {
-            tooltip: {},
+            tooltip: {
+                formatter: '{b}'
+            },
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
             series: [{
                 type: 'graph',
-                layout: 'none',
+                layout: 'none', // Fixed layout for precision
                 symbolSize: 50,
-                roam: true,
-                label: { show: true, position: 'bottom', fontSize: 10 },
+                roam: true, // Enable Zoom/Pan
+                label: {
+                    show: true,
+                    position: 'bottom',
+                    fontSize: 12,
+                    fontWeight: 600,
+                    color: '#334155',
+                    formatter: '{b}'
+                },
                 edgeSymbol: ['circle', 'arrow'],
                 edgeSymbolSize: [4, 10],
+                edgeLabel: {
+                    fontSize: 10,
+                    color: '#64748b'
+                },
+                lineStyle: {
+                    width: 2,
+                    curveness: 0.1,
+                    color: '#cbd5e1'
+                },
+                // Define The Architecture Nodes
                 data: [
-                    { name: 'Text', x: 0, y: 100, itemStyle: { color: '#94a3b8' } },
-                    { name: 'Phonemizer', x: 200, y: 100 },
-                    { name: 'BiMamba', x: 400, y: 100, symbolSize: 70, itemStyle: { color: '#8b5cf6' } },
-                    { name: 'Flow Match', x: 600, y: 100, symbolSize: 70, itemStyle: { color: '#ec4899' } },
-                    { name: 'Vocoder', x: 800, y: 100 },
-                    { name: 'Audio', x: 1000, y: 100, itemStyle: { color: '#22c55e' } },
-                    { name: 'Ref Audio', x: 400, y: 300, itemStyle: { color: '#f59e0b' } }
+                    // --- LAYER 1: INPUTS ---
+                    {
+                        name: 'Sinhala Text',
+                        x: 0, y: 300,
+                        symbol: 'rect', symbolSize: [120, 50],
+                        itemStyle: { color: colors.text, shadowBlur: 10, shadowColor: colors.text + '66' },
+                        label: { color: 'white', position: 'inside' }
+                    },
+                    {
+                        name: 'Ref Audio\n(Emotion)',
+                        x: 0, y: 500,
+                        symbol: 'rect', symbolSize: [120, 50],
+                        itemStyle: { color: colors.audio, shadowBlur: 10, shadowColor: colors.audio + '66' },
+                        label: { color: 'white', position: 'inside' }
+                    },
+
+                    // --- LAYER 2: ENCODERS ---
+                    {
+                        name: 'IPA Phonemizer',
+                        x: 250, y: 300,
+                        symbol: 'roundRect', symbolSize: [110, 40],
+                        itemStyle: { color: 'white', borderColor: colors.text, borderWidth: 2 }
+                    },
+                    {
+                        name: 'Style Encoder\n(GST/VAE)',
+                        x: 250, y: 500,
+                        symbol: 'roundRect', symbolSize: [110, 40],
+                        itemStyle: { color: 'white', borderColor: colors.audio, borderWidth: 2 }
+                    },
+
+                    // --- LAYER 3: FUSION & CORE ---
+                    {
+                        name: 'Fusion',
+                        x: 400, y: 400,
+                        symbol: 'diamond', symbolSize: [20, 20],
+                        itemStyle: { color: '#64748b' },
+                        label: { show: false }
+                    },
+                    {
+                        name: 'Bi-Directional\nMamba Block',
+                        x: 600, y: 400,
+                        symbol: 'rect', symbolSize: [180, 120],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+                                { offset: 0, color: '#7c3aed' },
+                                { offset: 1, color: '#4c1d95' }
+                            ]),
+                            shadowBlur: 20, shadowColor: 'rgba(124, 58, 237, 0.5)',
+                            borderRadius: 8
+                        },
+                        label: { show: true, position: 'inside', color: 'white', fontSize: 14 }
+                    },
+                    {
+                        name: 'Linear Time O(N)',
+                        x: 600, y: 480,
+                        symbolSize: 0,
+                        label: { show: true, color: '#a78bfa', fontSize: 10, position: 'top' }
+                    },
+
+                    // --- LAYER 4: DECODER (FLOW) ---
+                    {
+                        name: 'Noise (t=0)',
+                        x: 850, y: 250,
+                        symbol: 'circle', symbolSize: 40,
+                        itemStyle: { color: '#e2e8f0', borderType: 'dashed', borderColor: '#94a3b8', borderWidth: 1 },
+                        label: { position: 'inside', color: '#64748b', fontSize: 10 }
+                    },
+                    {
+                        name: 'Flow Matching\nDecoder',
+                        x: 850, y: 400,
+                        symbol: 'rect', symbolSize: [140, 100],
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
+                                { offset: 0, color: '#db2777' },
+                                { offset: 1, color: '#9d174d' }
+                            ]),
+                            shadowBlur: 20, shadowColor: 'rgba(219, 39, 119, 0.5)',
+                            borderRadius: 8
+                        },
+                        label: { show: true, position: 'inside', color: 'white', fontSize: 14 }
+                    },
+                    {
+                        name: 'ODE Solver',
+                        x: 850, y: 325, // between noise and decoder
+                        symbol: 'arrow', symbolSize: [15, 25], symbolRotate: 180,
+                        itemStyle: { color: '#94a3b8' },
+                        label: { position: 'right', formatter: 'Iterative\nRefinement' }
+                    },
+
+                    // --- LAYER 5: OUTPUT ---
+                    {
+                        name: 'Mel Spectrogram',
+                        x: 1050, y: 400,
+                        symbol: 'rect', symbolSize: [100, 40],
+                        itemStyle: { color: '#e0f2fe', borderColor: colors.output, borderWidth: 1, borderType: 'dashed' },
+                        label: { color: colors.output }
+                    },
+                    {
+                        name: 'HiFi-GAN\nVocoder',
+                        x: 1200, y: 400,
+                        symbol: 'roundRect', symbolSize: [100, 50],
+                        itemStyle: { color: colors.output, shadowBlur: 10, shadowColor: colors.output + '66' },
+                        label: { color: 'white', position: 'inside' }
+                    },
+                    {
+                        name: 'Final Audio',
+                        x: 1350, y: 400,
+                        symbol: 'circle', symbolSize: 50,
+                        itemStyle: { color: '#dcfce7', borderColor: '#16a34a', borderWidth: 2 },
+                        label: { color: '#166534', position: 'inside', formatter: 'WAV' }
+                    }
                 ],
+                // Define Connections
                 links: [
-                    { source: 'Text', target: 'Phonemizer' },
-                    { source: 'Phonemizer', target: 'BiMamba' },
-                    { source: 'Ref Audio', target: 'BiMamba', label: { show: true, formatter: 'Style' } },
-                    { source: 'BiMamba', target: 'Flow Match', label: { show: true, formatter: 'Context' } },
-                    { source: 'Flow Match', target: 'Vocoder', label: { show: true, formatter: 'Mel' } },
-                    { source: 'Vocoder', target: 'Audio' }
-                ],
-                lineStyle: { width: 3, curveness: 0 }
+                    // Text Path
+                    { source: 'Sinhala Text', target: 'IPA Phonemizer' },
+                    { source: 'IPA Phonemizer', target: 'Fusion', label: { show: true, formatter: 'Phonemes' } },
+
+                    // Audio Path
+                    { source: 'Ref Audio\n(Emotion)', target: 'Style Encoder\n(GST/VAE)' },
+                    { source: 'Style Encoder\n(GST/VAE)', target: 'Fusion', label: { show: true, formatter: 'Style Tokens' } },
+
+                    // Core Path
+                    { source: 'Fusion', target: 'Bi-Directional\nMamba Block' },
+                    { source: 'Bi-Directional\nMamba Block', target: 'Flow Matching\nDecoder', label: { show: true, formatter: 'Context' } },
+
+                    // Decoder Path
+                    { source: 'Noise (t=0)', target: 'ODE Solver' },
+                    { source: 'ODE Solver', target: 'Flow Matching\nDecoder' },
+                    { source: 'Flow Matching\nDecoder', target: 'Mel Spectrogram', label: { show: true, formatter: 'Est. Mel' } },
+
+                    // Output Path
+                    { source: 'Mel Spectrogram', target: 'HiFi-GAN\nVocoder' },
+                    { source: 'HiFi-GAN\nVocoder', target: 'Final Audio' }
+                ]
             }]
         };
         archChart.setOption(archOption);
