@@ -47,6 +47,10 @@ PsycheTTS/
 ```
 
 ---
+## Why use Gemini 2.5 Pro preview-tts?
+Due to the scarcity of Sinhala voice samples with expected quality, reliability, and consistency, we had to find another solution for the  voice dataset. After our research and comparison, we figured out that Gemini has very good emotional and natural-sounding vocal ability in Sinhala TTS generation. 
+<img width="1200" height="1200" alt="analysis_chart" src="https://github.com/user-attachments/assets/11aff756-c16b-4ed5-9e39-adc237d06a1d" />
+
 
 ## ⚡ Quick Start
 
@@ -54,7 +58,7 @@ PsycheTTS/
 Generate your own emotional dataset using our specialized tool.
 
 ```bash
-# 1. Navigate to collector directory
+# 1. Navigate to the collector directory
 cd collector
 
 # 2. Install dependencies (First time only)
