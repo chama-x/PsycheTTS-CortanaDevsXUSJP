@@ -583,7 +583,7 @@
         const archChart = echarts.init(document.getElementById('chart-arch'));
 
         // Define visual style constants
-        const colors = {
+        const archColors = {
             text: '#3b82f6',    // Blue
             audio: '#f59e0b',   // Amber
             core: '#8b5cf6',    // Violet
@@ -629,14 +629,14 @@
                         name: 'Sinhala Text',
                         x: 0, y: 300,
                         symbol: 'rect', symbolSize: [120, 50],
-                        itemStyle: { color: colors.text, shadowBlur: 10, shadowColor: colors.text + '66' },
+                        itemStyle: { color: archColors.text, shadowBlur: 10, shadowColor: archColors.text + '66' },
                         label: { color: 'white', position: 'inside' }
                     },
                     {
                         name: 'Ref Audio\n(Emotion)',
                         x: 0, y: 500,
                         symbol: 'rect', symbolSize: [120, 50],
-                        itemStyle: { color: colors.audio, shadowBlur: 10, shadowColor: colors.audio + '66' },
+                        itemStyle: { color: archColors.audio, shadowBlur: 10, shadowColor: archColors.audio + '66' },
                         label: { color: 'white', position: 'inside' }
                     },
 
@@ -645,13 +645,13 @@
                         name: 'IPA Phonemizer',
                         x: 250, y: 300,
                         symbol: 'roundRect', symbolSize: [110, 40],
-                        itemStyle: { color: 'white', borderColor: colors.text, borderWidth: 2 }
+                        itemStyle: { color: 'white', borderColor: archColors.text, borderWidth: 2 }
                     },
                     {
                         name: 'Style Encoder\n(GST/VAE)',
                         x: 250, y: 500,
                         symbol: 'roundRect', symbolSize: [110, 40],
-                        itemStyle: { color: 'white', borderColor: colors.audio, borderWidth: 2 }
+                        itemStyle: { color: 'white', borderColor: archColors.audio, borderWidth: 2 }
                     },
 
                     // --- LAYER 3: FUSION & CORE ---
@@ -718,14 +718,14 @@
                         name: 'Mel Spectrogram',
                         x: 1050, y: 400,
                         symbol: 'rect', symbolSize: [100, 40],
-                        itemStyle: { color: '#e0f2fe', borderColor: colors.output, borderWidth: 1, borderType: 'dashed' },
-                        label: { color: colors.output }
+                        itemStyle: { color: '#e0f2fe', borderColor: archColors.output, borderWidth: 1, borderType: 'dashed' },
+                        label: { color: archColors.output }
                     },
                     {
                         name: 'HiFi-GAN\nVocoder',
                         x: 1200, y: 400,
                         symbol: 'roundRect', symbolSize: [100, 50],
-                        itemStyle: { color: colors.output, shadowBlur: 10, shadowColor: colors.output + '66' },
+                        itemStyle: { color: archColors.output, shadowBlur: 10, shadowColor: archColors.output + '66' },
                         label: { color: 'white', position: 'inside' }
                     },
                     {
