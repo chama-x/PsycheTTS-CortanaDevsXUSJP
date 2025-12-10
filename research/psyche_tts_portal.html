@@ -605,84 +605,84 @@
             neutral: '#94a3b8'  // Slate
         };
 
-        // Detailed Node Explanations
+        // Detailed Node Explanations (Shortened for UI)
         const nodeDetails = {
             'Sinhala Text': {
-                logic: "The raw input sentence provided by the user or system.",
-                expert: "Serves as the linguistic linguistic condition for the model.",
-                alt: "Semantic Vectors",
-                tradeoff: "Text is ambiguous on intonation; requires context to interpret.",
-                conclusion: "Primary content driver."
+                logic: "Raw input sentence.",
+                expert: "Linguistic condition.",
+                alt: "Vectors",
+                tradeoff: "Ambiguous intonation.",
+                conclusion: "Content driver."
             },
             'Ref Audio\n(Emotion)': {
-                logic: "A short audio clip (3-5s) demonstrating the desired emotion (e.g., 'Sad').",
-                expert: "We extract prosody (pitch, rhythm, timbre) independently of the text content.",
-                alt: "One-Hot Speaker ID",
-                tradeoff: "Computation-heavy to encode but offers infinite, zero-shot styling capability.",
-                conclusion: "Enables 'Voice Cloning'."
+                logic: "3-5s emotion clip.",
+                expert: "Extracts prosody (pitch/rhythm).",
+                alt: "Speaker ID",
+                tradeoff: "Compute heavy encoding.",
+                conclusion: "Enables Voice Cloning."
             },
             'IPA Phonemizer': {
-                logic: "Converts characters (A, B) into sound symbols (Phonemes).",
-                expert: "Normalizes 'Spoken' vs 'Written' differences. Critical for Diglossic languages like Sinhala.",
-                alt: "ByT5 Embeddings",
-                tradeoff: "Requires complex rules, but effectively eliminates pronunciation errors.",
-                conclusion: "Ensures intelligibility."
+                logic: "Chars to Sound Symbols.",
+                expert: "Normalizes writing diffs.",
+                alt: "ByT5",
+                tradeoff: "Complex rules required.",
+                conclusion: "Fixes pronunciation."
             },
             'Style Encoder\n(GST/VAE)': {
-                logic: "Compresses Ref Audio into a 'Style Vector'.",
-                expert: "Global Style Tokens (GST) learn independent 'style embeddings' to represent emotion.",
-                alt: "x-vectors (Verification)",
-                tradeoff: "Harder to train than simple labels, but generalizes to unseen emotions.",
-                conclusion: "Mathematical emotion understanding."
+                logic: "Audio -> Style Vector.",
+                expert: "Learns style embeddings.",
+                alt: "x-vectors",
+                tradeoff: "Hard to train.",
+                conclusion: "Math representation of emotion."
             },
             'Fusion': {
-                logic: "Combines Text (Content) and Style (Emotion).",
-                expert: "Often uses concatenation or Cross-Attention mechanisms.",
-                alt: "Adaptive Instance Norm",
-                tradeoff: "Simple concat is fast but might lose fine-grained control.",
-                conclusion: "Merges 'What' with 'How'."
+                logic: "Combines Content + Style.",
+                expert: "Concat / Cross-Attn.",
+                alt: "AdaIN",
+                tradeoff: "Loss of fine control.",
+                conclusion: "Merges What & How."
             },
             'Bi-Directional\nMamba Block': {
-                logic: "The 'Brain'. Predicts duration and pitch from context.",
-                expert: "State Space Model (SSM) with O(N) linear time complexity (vs Transformer O(N²)).",
-                alt: "Transformers (GPT)",
-                tradeoff: "Less community maturity than Transformers, but significantly faster.",
-                conclusion: "Secret weapon for <100ms latency."
+                logic: "Predicts duration/pitch.",
+                expert: "SSM: O(N) Linear Time.",
+                alt: "Transformers",
+                tradeoff: "Newer/Less mature arch.",
+                conclusion: "Fast (<100ms latency)."
             },
             'Flow Matching\nDecoder': {
-                logic: "Iteratively sculpts noise into a Spectrogram.",
-                expert: "Uses Optimal Transport to find the 'straightest path' from noise to data.",
-                alt: "Diffusion (DDPM), GANs",
-                tradeoff: "Slower than GANs, but vastly higher stability and mode coverage.",
-                conclusion: "SOTA balance: Speed vs Quality."
+                logic: "Noise -> Spectrogram.",
+                expert: "Optimal Transport path.",
+                alt: "Diffusion / GANs",
+                tradeoff: "Slower than GANs.",
+                conclusion: "High Stability & Quality."
             },
             'ODE Solver': {
-                logic: "Steps through the Flow generation process.",
-                expert: "Solves the probability differential equation defined by the model.",
-                alt: "SDE Solvers",
-                tradeoff: "More steps = high quality but high latency.",
-                conclusion: "Controls 'Rendering Quality'."
+                logic: "Generates flow steps.",
+                expert: "Solves prob. diff. eq.",
+                alt: "SDE Solver",
+                tradeoff: "More steps = Latency.",
+                conclusion: "rendering quality."
             },
             'Mel Spectrogram': {
-                logic: "Visual representation of audio frequencies.",
-                expert: "Log-frequency scale matches human ear perception.",
-                alt: "Linear Spectrogram",
-                tradeoff: "Lossy (no phase info) but easier to model than raw waves.",
-                conclusion: "Standard audio feature."
+                logic: "Visual audio freqs.",
+                expert: "Log-freq scale.",
+                alt: "Linear Spec",
+                tradeoff: "Lossy (no phase).",
+                conclusion: "Standard feature."
             },
             'HiFi-GAN\nVocoder': {
-                logic: "Converts Spectrogram -> Raw Audio Waveform.",
-                expert: "Specialized GAN hallucinating missing phase information.",
-                alt: "WaveGlow, Griffin-Lim",
-                tradeoff: "Compute heavy, but indistinguishable from human speech.",
-                conclusion: "Makes it sound 'Human'."
+                logic: "Spec -> Waveform.",
+                expert: "GAN hallucinates phase.",
+                alt: "Griffin-Lim",
+                tradeoff: "Compute heavy.",
+                conclusion: "Human sound."
             },
             'Final Audio': {
-                logic: "The generated .wav file.",
-                expert: "24kHz Sampling Rate.",
-                alt: "MP3, FLAC",
-                tradeoff: "Uncompressed = large size.",
-                conclusion: "The Result."
+                logic: "Generated .wav.",
+                expert: "24kHz Sample Rate.",
+                alt: "MP3",
+                tradeoff: "Large size.",
+                conclusion: "Result."
             }
         };
 
@@ -720,7 +720,7 @@
                                     <p class="text-slate-600 leading-snug italic text-xs">"${info.expert}"</p>
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-2">
+                                <div class="space-y-2">
                                     <div class="bg-red-50 p-2 rounded border border-red-100">
                                         <span class="text-[9px] font-bold text-red-600 uppercase">Tradeoff</span>
                                         <p class="text-[10px] text-red-800 leading-tight mt-1">${info.tradeoff}</p>
@@ -767,7 +767,7 @@
                 },
                 // Define The Architecture Nodes
                 data: [
-                    // --- LAYER 1: INPUTS (x ~0-50 scaling) ---
+                    // --- LAYER 1: INPUTS (x ~0) ---
                     {
                         name: 'Sinhala Text',
                         x: 0, y: 150,
@@ -783,33 +783,33 @@
                         label: { color: 'white', position: 'inside', fontSize: 10 }
                     },
 
-                    // --- LAYER 2: ENCODERS (x ~150) ---
+                    // --- LAYER 2: ENCODERS (x ~140) ---
                     {
                         name: 'IPA Phonemizer',
-                        x: 160, y: 150,
+                        x: 140, y: 150,
                         symbol: 'roundRect', symbolSize: [80, 30],
                         itemStyle: { color: 'white', borderColor: archColors.text, borderWidth: 2 },
                         label: { fontSize: 10 }
                     },
                     {
                         name: 'Style Encoder\n(GST/VAE)',
-                        x: 160, y: 350,
+                        x: 140, y: 350,
                         symbol: 'roundRect', symbolSize: [80, 30],
                         itemStyle: { color: 'white', borderColor: archColors.audio, borderWidth: 2 },
                         label: { fontSize: 10 }
                     },
 
-                    // --- LAYER 3: FUSION & CORE (x ~300-400) ---
+                    // --- LAYER 3: FUSION & CORE (x ~250-360) ---
                     {
                         name: 'Fusion',
-                        x: 280, y: 250,
+                        x: 250, y: 250,
                         symbol: 'diamond', symbolSize: [15, 15],
                         itemStyle: { color: '#64748b' },
                         label: { show: false }
                     },
                     {
                         name: 'Bi-Directional\nMamba Block',
-                        x: 420, y: 250,
+                        x: 360, y: 250,
                         symbol: 'rect', symbolSize: [120, 80],
                         itemStyle: {
                             color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
@@ -823,22 +823,22 @@
                     },
                     {
                         name: 'Linear Time O(N)',
-                        x: 420, y: 300,
+                        x: 360, y: 300,
                         symbolSize: 0,
                         label: { show: true, color: '#a78bfa', fontSize: 9, position: 'top' }
                     },
 
-                    // --- LAYER 4: DECODER (x ~550-600) ---
+                    // --- LAYER 4: DECODER (x ~500) ---
                     {
                         name: 'Noise (t=0)',
-                        x: 600, y: 150,
+                        x: 500, y: 150,
                         symbol: 'circle', symbolSize: 30,
                         itemStyle: { color: '#e2e8f0', borderType: 'dashed', borderColor: '#94a3b8', borderWidth: 1 },
                         label: { position: 'inside', color: '#64748b', fontSize: 8 }
                     },
                     {
                         name: 'Flow Matching\nDecoder',
-                        x: 600, y: 250,
+                        x: 500, y: 250,
                         symbol: 'rect', symbolSize: [100, 70],
                         itemStyle: {
                             color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
@@ -852,30 +852,30 @@
                     },
                     {
                         name: 'ODE Solver',
-                        x: 600, y: 200,
+                        x: 500, y: 200,
                         symbol: 'arrow', symbolSize: [10, 15], symbolRotate: 180,
                         itemStyle: { color: '#94a3b8' },
                         label: { position: 'right', formatter: 'Iterative\nRefinement', fontSize: 8 }
                     },
 
-                    // --- LAYER 5: OUTPUT (x ~750-900) ---
+                    // --- LAYER 5: OUTPUT (x ~620-820) ---
                     {
                         name: 'Mel Spectrogram',
-                        x: 750, y: 250,
+                        x: 630, y: 250,
                         symbol: 'rect', symbolSize: [80, 30],
                         itemStyle: { color: '#e0f2fe', borderColor: archColors.output, borderWidth: 1, borderType: 'dashed' },
                         label: { color: archColors.output, fontSize: 10 }
                     },
                     {
                         name: 'HiFi-GAN\nVocoder',
-                        x: 850, y: 250,
+                        x: 730, y: 250,
                         symbol: 'roundRect', symbolSize: [80, 40],
                         itemStyle: { color: archColors.output, shadowBlur: 10, shadowColor: archColors.output + '66' },
                         label: { color: 'white', position: 'inside', fontSize: 10 }
                     },
                     {
                         name: 'Final Audio',
-                        x: 950, y: 250,
+                        x: 820, y: 250,
                         symbol: 'circle', symbolSize: 40,
                         itemStyle: { color: '#dcfce7', borderColor: '#16a34a', borderWidth: 2 },
                         label: { color: '#166534', position: 'inside', formatter: 'WAV', fontSize: 10 }
