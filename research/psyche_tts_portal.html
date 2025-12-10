@@ -98,7 +98,7 @@
     <div class="fixed top-6 right-6 z-50 flex gap-4">
         <a href="https://github.com/Cortana-Devs/PsycheTTS-V2" target="_blank"
             class="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-semibold hover:scale-105 transition shadow-sm hover:shadow-md">
-            <i data-lucide="github" class="w-4 h-4"></i> Cortana-Devs
+            <i data-lucide="github" class="w-4 h-4"></i> Repo
         </a>
     </div>
 
@@ -278,93 +278,135 @@
             </div>
 
             <!-- Tab Navigation -->
-            <div class="flex gap-4 mb-8 pl-12 border-b border-slate-200">
+            <div class="flex gap-4 mb-4 pl-12 border-b border-slate-200 overflow-x-auto">
+                <button onclick="switchTab('context')" id="tab-context"
+                    class="pb-4 px-2 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition whitespace-nowrap">Problem
+                    Context</button>
                 <button onclick="switchTab('arch')" id="tab-arch"
-                    class="pb-4 px-2 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition">Core
+                    class="pb-4 px-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition whitespace-nowrap">Core
                     Architecture</button>
                 <button onclick="switchTab('pipe')" id="tab-pipe"
-                    class="pb-4 px-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition">Distillation
+                    class="pb-4 px-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition whitespace-nowrap">Distillation
                     Pipeline</button>
+                <button onclick="switchTab('impl')" id="tab-impl"
+                    class="pb-4 px-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition whitespace-nowrap">Implementation
+                    Plan</button>
             </div>
 
             <!-- Canvas -->
-            <div
-                class="relative w-full h-[600px] bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-inner group cursor-grab active:cursor-grabbing">
+            <div class="relative w-full h-[600px] bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-inner group border-box"
+                style="touch-action: none;">
 
                 <!-- Zoom Container -->
                 <div id="blueprint-container"
-                    class="w-full h-full flex items-center justify-center transition-transform duration-200 ease-out origin-center">
+                    class="w-full h-full absolute top-0 left-0 transition-transform duration-75 ease-linear origin-center flex items-center justify-center">
 
-                    <!-- Diagram 1: Architecture -->
-                    <div id="arch-diagram" class="blueprint opacity-100 transition-opacity duration-300">
+                    <!-- Diagram 1: Context (Why we are here) -->
+                    <div id="context-diagram" class="blueprint w-full h-full flex items-center justify-center">
                         <div class="mermaid">
-                            graph TD
-                            %% Nodes
-                            IN_TEXT[("📄 Input Text\n(Sinhala)")]
-                            IN_REF[("🔊 Reference\n(Emotional Audio)")]
+                            mindmap
+                            root((PsycheTTS))
+                            Problem
+                            Cloud Latency
+                            >>1000ms<< Unusable for Real-time Data Scarcity No Sinhala Emotion Dataset Expensive to
+                                record Solution Knowledge Distillation Teacher: Gemini 2.5 Pro Student: BiMamba Model
+                                Efficiency Linear Time O(N) Edge Deployable </div>
+                        </div>
 
-                            subgraph "Encoders"
-                            IPA["🔤 IPA Phonemizer"]
-                            STYLE["🎼 Style Encoder\n(GST/VAE)"]
-                            end
+                        <!-- Diagram 2: Architecture -->
+                        <div id="arch-diagram"
+                            class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div class="mermaid">
+                                graph TD
+                                %% Nodes
+                                IN_TEXT[("📄 Input Text\n(Sinhala)")]
+                                IN_REF[("🔊 Reference\n(Emotional Audio)")]
 
-                            subgraph "PsycheTTS Core"
-                            MAMBA["🧠 Bi-Directional Mamba\n(Global Context O(N))"]
-                            FLOW["🌊 Flow Matching Decoder\n(Optimal Transport)"]
-                            end
+                                subgraph "Encoders"
+                                IPA["🔤 IPA Phonemizer"]
+                                STYLE["🎼 Style Encoder\n(GST/VAE)"]
+                                end
 
-                            OUT_MEL[("📊 Mel Spectrogram")]
-                            VOCODER["🗣️ HiFi-GAN Vocoder"]
-                            OUT_WAV[("🎵 Output Waveform")]
+                                subgraph "PsycheTTS Core"
+                                MAMBA["🧠 Bi-Directional Mamba\n(Global Context O(N))"]
+                                FLOW["🌊 Flow Matching Decoder\n(Optimal Transport)"]
+                                end
 
-                            %% Edges
-                            IN_TEXT --> IPA --> MAMBA
-                            IN_REF --> STYLE --> MAMBA
-                            MAMBA -- "Context + Style" --> FLOW
-                            FLOW --> OUT_MEL
-                            OUT_MEL --> VOCODER
-                            VOCODER --> OUT_WAV
+                                OUT_MEL[("📊 Mel Spectrogram")]
+                                VOCODER["🗣️ HiFi-GAN Vocoder"]
+                                OUT_WAV[("🎵 Output Waveform")]
 
-                            %% Styles
-                            style MAMBA fill:#dbeafe,stroke:#2563eb,stroke-width:2px;
-                            style FLOW fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px;
-                            style IN_TEXT fill:#f8fafc,stroke:#94a3b8;
-                            style IN_REF fill:#f8fafc,stroke:#94a3b8;
-                            style OUT_WAV fill:#dcfce7,stroke:#22c55e,stroke-width:2px;
+                                %% Edges
+                                IN_TEXT --> IPA --> MAMBA
+                                IN_REF --> STYLE --> MAMBA
+                                MAMBA -- "Context + Style" --> FLOW
+                                FLOW --> OUT_MEL
+                                OUT_MEL --> VOCODER
+                                VOCODER --> OUT_WAV
+
+                                %% Styles
+                                style MAMBA fill:#dbeafe,stroke:#2563eb,stroke-width:2px;
+                                style FLOW fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px;
+                                style IN_TEXT fill:#f8fafc,stroke:#94a3b8;
+                                style IN_REF fill:#f8fafc,stroke:#94a3b8;
+                                style OUT_WAV fill:#dcfce7,stroke:#22c55e,stroke-width:2px;
+                            </div>
+                        </div>
+
+                        <!-- Diagram 3: Pipeline -->
+                        <div id="pipe-diagram"
+                            class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div class="mermaid">
+                                sequenceDiagram
+                                participant U as User
+                                participant H as Web Helper
+                                participant G as Gemini 2.5 API
+                                participant D as Dataset (Local)
+
+                                Note over U, H: Manual Collection Phase
+                                U->>H: 1. Copy Prompt
+                                H-->>U: "Prompt Copied!"
+                                U->>G: 2. Paste & Generate (AI Studio)
+                                G->>U: Returns Audio (Happy/Sad)
+                                U->>H: 3. Copy Filename
+                                H-->>U: "happy_leda_1.wav"
+                                U->>D: 4. Save Audio File
+                                U->>H: 5. Click "Log to CSV"
+                                H->>D: Appends Metadata Record
+                                Note right of D: Training Data Ready
+                            </div>
+                        </div>
+
+                        <!-- Diagram 4: Implementation Plan -->
+                        <div id="impl-diagram"
+                            class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div class="mermaid">
+                                gantt
+                                title Research Roadmap
+                                dateFormat YYYY-MM-DD
+                                section Phase 1: Data
+                                Build Collector UI :done, des1, 2025-12-01, 2025-12-05
+                                Collect 500 Samples :active, des2, 2025-12-06, 2025-12-20
+                                Verify Phoneme Align : des3, after des2, 5d
+
+                                section Phase 2: Model
+                                Implement BiMamba Block : dev1, 2025-12-15, 2025-12-25
+                                Train Style Encoder : dev2, after dev1, 7d
+                                Flow Matching Decoder : dev3, after dev2, 10d
+
+                                section Phase 3: Eval
+                                MOS Listening Tests : eval1, after dev3, 5d
+                                Optimization (ONNX) : eval2, after eval1, 5d
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Diagram 2: Pipeline -->
-                    <div id="pipe-diagram"
-                        class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
-                        <div class="mermaid">
-                            sequenceDiagram
-                            participant U as User
-                            participant H as Web Helper
-                            participant G as Gemini 2.5 API
-                            participant D as Dataset (Local)
-
-                            Note over U, H: Manual Collection Phase
-                            U->>H: 1. Copy Prompt
-                            H-->>U: "Prompt Copied!"
-                            U->>G: 2. Paste & Generate (AI Studio)
-                            G->>U: Returns Audio (Happy/Sad)
-                            U->>H: 3. Copy Filename
-                            H-->>U: "happy_leda_1.wav"
-                            U->>D: 4. Save Audio File
-                            U->>H: 5. Click "Log to CSV"
-                            H->>D: Appends Metadata Record
-                            Note right of D: Training Data Ready
-                        </div>
+                    <div
+                        class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded text-xs text-slate-400 font-mono border border-slate-100">
+                        Scroll to Zoom • Drag to Pan
                     </div>
-                </div>
-
-                <div
-                    class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded text-xs text-slate-400 font-mono border border-slate-100">
-                    Scroll to Zoom • Drag to Pan
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- 3. ARCHITECTURE (Theoretical) -->
@@ -600,7 +642,7 @@
         // Zoom
         function setZoom(delta) {
             currentScale += delta;
-            currentScale = Math.max(0.5, Math.min(3, currentScale));
+            currentScale = Math.max(0.1, Math.min(5, currentScale)); // Wider zoom range
             updateTransform();
         }
 
@@ -615,12 +657,15 @@
             container.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
         }
 
-        // Pan
-        container.parentElement.addEventListener('mousedown', (e) => {
+        // Pan Logic (Mouse)
+        const canvas = container.parentElement;
+
+        canvas.addEventListener('mousedown', (e) => {
             isDragging = true;
             startX = e.clientX - translateX;
             startY = e.clientY - translateY;
-            container.parentElement.style.cursor = 'grabbing';
+            canvas.style.cursor = 'grabbing';
+            e.preventDefault(); // Prevent text selection
         });
 
         window.addEventListener('mousemove', (e) => {
@@ -632,8 +677,19 @@
         });
 
         window.addEventListener('mouseup', () => {
-            isDragging = false;
-            container.parentElement.style.cursor = 'grab';
+            if (isDragging) {
+                isDragging = false;
+                canvas.style.cursor = 'grab';
+            }
+        });
+
+        // Wheel Zoom
+        canvas.addEventListener('wheel', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                setZoom(delta);
+            }
         });
 
         // Active State for Bottom Dock
@@ -662,36 +718,39 @@
         document.querySelectorAll('section').forEach(section => {
             observer.observe(section);
         });
-        function switchTab(tab) {
-            const arch = document.getElementById('arch-diagram');
-            const pipe = document.getElementById('pipe-diagram');
-            const btnArch = document.getElementById('tab-arch');
-            const btnPipe = document.getElementById('tab-pipe');
+        // Tabs
+        function switchTab(tabId) {
+            // Hide all diagrams
+            document.querySelectorAll('.blueprint').forEach(el => {
+                el.classList.add('opacity-0', 'hidden');
+                el.classList.remove('opacity-100', 'flex');
+            });
 
-            if (tab === 'arch') {
-                arch.classList.remove('opacity-0', 'hidden');
-                arch.classList.add('opacity-100');
-                pipe.classList.add('opacity-0', 'hidden');
-                pipe.classList.remove('opacity-100');
+            // Deactivate all buttons
+            document.querySelectorAll('button[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('text-blue-600', 'border-blue-600');
+                btn.classList.add('text-slate-500', 'hover:text-slate-800');
+            });
 
-                btnArch.classList.add('text-blue-600', 'border-blue-600');
-                btnArch.classList.remove('text-slate-500', 'hover:text-slate-800');
-                btnPipe.classList.remove('text-blue-600', 'border-blue-600');
-                btnPipe.classList.add('text-slate-500', 'hover:text-slate-800');
-            } else {
-                pipe.classList.remove('opacity-0', 'hidden');
-                pipe.classList.add('opacity-100', 'flex'); // flex needed for centering
-                arch.classList.add('opacity-0', 'hidden');
-                arch.classList.remove('opacity-100');
+            // Activate Target
+            const target = document.getElementById(tabId + '-diagram');
+            const targetBtn = document.getElementById('tab-' + tabId);
 
-                btnPipe.classList.add('text-blue-600', 'border-blue-600');
-                btnPipe.classList.remove('text-slate-500', 'hover:text-slate-800');
-                btnArch.classList.remove('text-blue-600', 'border-blue-600');
-                btnArch.classList.add('text-slate-500', 'hover:text-slate-800');
+            if (target && targetBtn) {
+                target.classList.remove('opacity-0', 'hidden');
+                target.classList.add('opacity-100', 'flex');
+
+                targetBtn.classList.add('text-blue-600', 'border-blue-600');
+                targetBtn.classList.remove('text-slate-500', 'hover:text-slate-800');
             }
+
             resetZoom();
         }
+
+        // Initial Tab
+        switchTab('context');
     </script>
 </body>
 
 </html>
+```
