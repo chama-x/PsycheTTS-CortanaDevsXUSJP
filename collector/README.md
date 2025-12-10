@@ -22,9 +22,9 @@ A premium web interface to collect and curate high-quality audio samples from Ge
 
 3. **Run the App**
    ```bash
-   python app.py
+   python src/web/server.py
    ```
-   Open http://127.0.0.1:5000 in your browser.
+   Open http://127.0.0.1:8000 in your browser.
 
 4. **Collect Data**
    - Enter text (Sinhala or English).
@@ -33,5 +33,5 @@ A premium web interface to collect and curate high-quality audio samples from Ge
    - If satisfied, click **Save to Kaggle Dataset**.
 
 ## Output
-Files are saved to `./kaggle_dataset/` with the naming convention:
+Files are saved to `./dataset/` with the naming convention:
 `YYYYMMDD_HHMMSS_{Voice}_{Emotion}_{TextSnippet}.mp3`

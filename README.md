@@ -1,6 +1,6 @@
 # PsycheTTS: Emotional Text-to-Speech Research Platform
 
-**PsycheTTS** is a comprehensive project focused on developing emotionally expressive Text-to-Speech models for Sinhala, utilizing advanced techniques like the Gemini 2.5 Pro TTS API for data collection and custom neural architectures for training.
+**PsycheTTS** is a comprehensive research project contributed to the **University of Sri Jayewardenepura**. It focuses on developing emotionally expressive Text-to-Speech models for Sinhala, utilizing advanced techniques like the Gemini 2.5 Pro TTS API for data collection and custom neural architectures for training.
 
 ## Project Structure
 
