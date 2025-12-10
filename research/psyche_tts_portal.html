@@ -767,116 +767,118 @@
                 },
                 // Define The Architecture Nodes
                 data: [
-                    // --- LAYER 1: INPUTS ---
+                    // --- LAYER 1: INPUTS (x ~0-50 scaling) ---
                     {
                         name: 'Sinhala Text',
-                        x: 0, y: 300,
-                        symbol: 'rect', symbolSize: [120, 50],
+                        x: 0, y: 150,
+                        symbol: 'rect', symbolSize: [80, 40],
                         itemStyle: { color: archColors.text, shadowBlur: 10, shadowColor: archColors.text + '66' },
-                        label: { color: 'white', position: 'inside' }
+                        label: { color: 'white', position: 'inside', fontSize: 10 }
                     },
                     {
                         name: 'Ref Audio\n(Emotion)',
-                        x: 0, y: 500,
-                        symbol: 'rect', symbolSize: [120, 50],
+                        x: 0, y: 350,
+                        symbol: 'rect', symbolSize: [80, 40],
                         itemStyle: { color: archColors.audio, shadowBlur: 10, shadowColor: archColors.audio + '66' },
-                        label: { color: 'white', position: 'inside' }
+                        label: { color: 'white', position: 'inside', fontSize: 10 }
                     },
 
-                    // --- LAYER 2: ENCODERS ---
+                    // --- LAYER 2: ENCODERS (x ~150) ---
                     {
                         name: 'IPA Phonemizer',
-                        x: 250, y: 300,
-                        symbol: 'roundRect', symbolSize: [110, 40],
-                        itemStyle: { color: 'white', borderColor: archColors.text, borderWidth: 2 }
+                        x: 160, y: 150,
+                        symbol: 'roundRect', symbolSize: [80, 30],
+                        itemStyle: { color: 'white', borderColor: archColors.text, borderWidth: 2 },
+                        label: { fontSize: 10 }
                     },
                     {
                         name: 'Style Encoder\n(GST/VAE)',
-                        x: 250, y: 500,
-                        symbol: 'roundRect', symbolSize: [110, 40],
-                        itemStyle: { color: 'white', borderColor: archColors.audio, borderWidth: 2 }
+                        x: 160, y: 350,
+                        symbol: 'roundRect', symbolSize: [80, 30],
+                        itemStyle: { color: 'white', borderColor: archColors.audio, borderWidth: 2 },
+                        label: { fontSize: 10 }
                     },
 
-                    // --- LAYER 3: FUSION & CORE ---
+                    // --- LAYER 3: FUSION & CORE (x ~300-400) ---
                     {
                         name: 'Fusion',
-                        x: 400, y: 400,
-                        symbol: 'diamond', symbolSize: [20, 20],
+                        x: 280, y: 250,
+                        symbol: 'diamond', symbolSize: [15, 15],
                         itemStyle: { color: '#64748b' },
                         label: { show: false }
                     },
                     {
                         name: 'Bi-Directional\nMamba Block',
-                        x: 600, y: 400,
-                        symbol: 'rect', symbolSize: [180, 120],
+                        x: 420, y: 250,
+                        symbol: 'rect', symbolSize: [120, 80],
                         itemStyle: {
                             color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
                                 { offset: 0, color: '#7c3aed' },
                                 { offset: 1, color: '#4c1d95' }
                             ]),
-                            shadowBlur: 20, shadowColor: 'rgba(124, 58, 237, 0.5)',
-                            borderRadius: 8
+                            shadowBlur: 15, shadowColor: 'rgba(124, 58, 237, 0.5)',
+                            borderRadius: 6
                         },
-                        label: { show: true, position: 'inside', color: 'white', fontSize: 14 }
+                        label: { show: true, position: 'inside', color: 'white', fontSize: 12 }
                     },
                     {
                         name: 'Linear Time O(N)',
-                        x: 600, y: 480,
+                        x: 420, y: 300,
                         symbolSize: 0,
-                        label: { show: true, color: '#a78bfa', fontSize: 10, position: 'top' }
+                        label: { show: true, color: '#a78bfa', fontSize: 9, position: 'top' }
                     },
 
-                    // --- LAYER 4: DECODER (FLOW) ---
+                    // --- LAYER 4: DECODER (x ~550-600) ---
                     {
                         name: 'Noise (t=0)',
-                        x: 850, y: 250,
-                        symbol: 'circle', symbolSize: 40,
+                        x: 600, y: 150,
+                        symbol: 'circle', symbolSize: 30,
                         itemStyle: { color: '#e2e8f0', borderType: 'dashed', borderColor: '#94a3b8', borderWidth: 1 },
-                        label: { position: 'inside', color: '#64748b', fontSize: 10 }
+                        label: { position: 'inside', color: '#64748b', fontSize: 8 }
                     },
                     {
                         name: 'Flow Matching\nDecoder',
-                        x: 850, y: 400,
-                        symbol: 'rect', symbolSize: [140, 100],
+                        x: 600, y: 250,
+                        symbol: 'rect', symbolSize: [100, 70],
                         itemStyle: {
                             color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [
                                 { offset: 0, color: '#db2777' },
                                 { offset: 1, color: '#9d174d' }
                             ]),
-                            shadowBlur: 20, shadowColor: 'rgba(219, 39, 119, 0.5)',
-                            borderRadius: 8
+                            shadowBlur: 15, shadowColor: 'rgba(219, 39, 119, 0.5)',
+                            borderRadius: 6
                         },
-                        label: { show: true, position: 'inside', color: 'white', fontSize: 14 }
+                        label: { show: true, position: 'inside', color: 'white', fontSize: 12 }
                     },
                     {
                         name: 'ODE Solver',
-                        x: 850, y: 325, // between noise and decoder
-                        symbol: 'arrow', symbolSize: [15, 25], symbolRotate: 180,
+                        x: 600, y: 200,
+                        symbol: 'arrow', symbolSize: [10, 15], symbolRotate: 180,
                         itemStyle: { color: '#94a3b8' },
-                        label: { position: 'right', formatter: 'Iterative\nRefinement' }
+                        label: { position: 'right', formatter: 'Iterative\nRefinement', fontSize: 8 }
                     },
 
-                    // --- LAYER 5: OUTPUT ---
+                    // --- LAYER 5: OUTPUT (x ~750-900) ---
                     {
                         name: 'Mel Spectrogram',
-                        x: 1050, y: 400,
-                        symbol: 'rect', symbolSize: [100, 40],
+                        x: 750, y: 250,
+                        symbol: 'rect', symbolSize: [80, 30],
                         itemStyle: { color: '#e0f2fe', borderColor: archColors.output, borderWidth: 1, borderType: 'dashed' },
-                        label: { color: archColors.output }
+                        label: { color: archColors.output, fontSize: 10 }
                     },
                     {
                         name: 'HiFi-GAN\nVocoder',
-                        x: 1200, y: 400,
-                        symbol: 'roundRect', symbolSize: [100, 50],
+                        x: 850, y: 250,
+                        symbol: 'roundRect', symbolSize: [80, 40],
                         itemStyle: { color: archColors.output, shadowBlur: 10, shadowColor: archColors.output + '66' },
-                        label: { color: 'white', position: 'inside' }
+                        label: { color: 'white', position: 'inside', fontSize: 10 }
                     },
                     {
                         name: 'Final Audio',
-                        x: 1350, y: 400,
-                        symbol: 'circle', symbolSize: 50,
+                        x: 950, y: 250,
+                        symbol: 'circle', symbolSize: 40,
                         itemStyle: { color: '#dcfce7', borderColor: '#16a34a', borderWidth: 2 },
-                        label: { color: '#166534', position: 'inside', formatter: 'WAV' }
+                        label: { color: '#166534', position: 'inside', formatter: 'WAV', fontSize: 10 }
                     }
                 ],
                 // Define Connections
