@@ -9,56 +9,47 @@ We will replace the rigid "Global Emotion Vector" with a continuous **Style Stre
 
 ## 2. Technical Architecture (v3 Refinement)
 
-### A. The "Style-Stream" Encoder (CLAP)
-Instead of a text classification ("Happy"), we use a **Contrastive Audio-Text Encoder**.
--   **Model**: `Microsoft/CLAP` or `LAION-CLAP` (Distilled for mobile).
--   **Input**: Text Prompt ("Warm and friendly") OR Reference Audio (3s sample).
--   **Output**: A sequence of **Style Tokens** ($S \in \mathbb{R}^{L \times D}$) rather than a single vector.
--   **Benefit**: Captures time-varying prosody (e.g., "Start calm, end excited").
+### A. The "Style-Stream" Encoder (CLAP - Corrected)
+-   **Model**: `Microsoft/CLAP` or `LAION-CLAP` (Distilled).
+-   **CRITICAL FIX**: usage of **Hidden States** (Last Transformer Layer), NOT the pooled vector.
+    -   *Why*: Pooling crushes time dynamics. Hidden states ($L \times D$) preserve the "Story of the Style" (e.g., rising intonation).
+-   **Output**: A sequence of **Style Tokens** ($S \in \mathbb{R}^{L \times D}$).
 
-### B. Cross-Attentive Bi-Mamba Backbone
-We inject style *inside* the depth of the model, not just at the start.
--   **Old (v2)**: `Mamba(Input + EmotionVector)`
--   **New (v3)**:
-    ```python
-    def forward(self, x, style_tokens):
-        x = self.conv1d(x)          # Texture
-        x = self.cross_attn(x, style_tokens) # <--- INJECTION POINT
-        x = self.bi_mamba(x)        # Global Flow
-        return x
-    ```
--   **Mechanism**: The `CrossAttention` layer allows specific phonemes to "query" the style tokens. (e.g., "How should I pronounce this vowel given the 'Warm' style?").
+### B. Cross-Attentive Bi-Mamba (Bottleneck Only)
+To preserve our <100ms latency, we do **not** put attention in every block.
+-   **Architecture**:
+    1.  `Conv1d_Front` (Texture)
+    2.  `BiMamba_Block_1` (Fast Context)
+    3.  **`Style_Cross_Attention` (The Injection Bottleneck)**
+    4.  `BiMamba_Block_2` (Fast Fusion)
+-   **Mechanism**: The middle layer attends to the CLAP hidden states to bias the flow.
 
-### C. Training Strategy: "The Authenticity Transfer"
-We cannot record 10,000 hours of Emotional Sinhala. We transfer "Physics".
-1.  **Stage 1: The Physics of Emotion (90%)**
-    -   Train on **English/Chinese** high-emotion datasets (ESD, RAVDESS).
-    -   Input: **IPA Phonemes**.
-    -   Model learns: *How to apply "Anger" to /a:/, /p/, /t/.*
-2.  **Stage 2: The Sinhala Passenger (10%)**
-    -   Eval on **Sinhala**.
-    -   Since Sinhala is just a sequence of IPA phonemes (which the model knows), it applies the "Anger" physics perfectly.
+### C. The Rhythm Adapter (Sinhala Specific)
+-   **Problem**: English rhythm (Stress-timed) $\neq$ Sinhala rhythm (Syllable-timed).
+-   **Solution**: A lightweight **Duration Predictor** (Conv1d) trained *specifically* on the ~1h Sinhala CommonVoice dataset.
+-   **Pipeline**: The core model handles *Pitch/Timbre* (Emotion), the Adapter handles *Timing*.
 
 ## 3. Implementation Phases
 
 ### Phase 1: The Style Bridge (Foundation)
--   [ ] **Set up CLAP**: Implement a lightweight wrapper for the CLAP encoder using `transformers` or `onnx`.
--   [ ] **Projector**: Build a simple MLP to project CLAP embeddings ($D=768$) to our model dim ($D=512$).
+-   [ ] **Set up CLAP**: Wrapper to extract `last_hidden_state`.
+-   [ ] **Projector**: Linear projection from CLAP dim to Model dim.
 
-### Phase 2: Core Architecture (The Brain)
--   [ ] **Modify `BiMambaBlock`**: Add `MultiheadAttention(query=x, key=style, value=style)`.
--   [ ] **Gated Fusion**: Ensure the style injection is gated (`tanh`) so it doesn't destabilize training initially.
+### Phase 2: Core Architecture (Optimized)
+-   [ ] **Modify `BiMambaBlock`**: Implement standard block.
+-   [ ] **Create `BottleneckStyleBlock`**: The specialized Cross-Attentive layer.
+-   [ ] **Implement `SinhalaDurationAdaptor`**: Simple stochastic duration predictor.
 
 ### Phase 3: Training & Verification
--   [ ] **Loss Function**: Add `StyleReconstructionLoss` - can we reconstruct the style vector from the generated audio?
--   [ ] **Inference Loop**: Update `inference.py` to accept text/audio prompts for style.
+-   [ ] **Loss Function**: `StyleReconstructionLoss` + `DurationLoss`.
+-   [ ] **Training**: Pre-train on English Emotion -> Fine-tune Duration on Sinhala.
 
 ## 4. Risks & Mitigations
--   **Risk**: Cross-Attention is $O(N^2)$.
-    -   **Mitigation**: We only attend to a small number of *Style Tokens* (e.g., 8 or 16), not the full sequence. This keeps it linear-ish $O(N \times k)$.
+-   **Risk**: CLAP text encoder is vague ("Warm").
+    -   **Mitigation**: Support **Reference Audio** prompting as the primary high-fidelity control conditioning.
 -   **Risk**: Overfitting to English prosody.
-    -   **Mitigation**: Use a localized "Rhythm Adapter" (Conv1d) for Sinhala duration modeling.
+    -   **Mitigation**: The `SinhalaDurationAdaptor` is the dedicated firewall against this.
 
 ## 5. Verification Plan
 -   **Unit Test**: generate audio from "Happy" text prompt. Compare spectrogram dynamic range vs v2.
--   **Acceptance Criteria**: Dynamic Range > 120Hz (matching Gemini).
+-   **Acceptance Criteria**: Dynamic Range > 120Hz (matching Gemini) AND <100ms Latency.

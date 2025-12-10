@@ -7,14 +7,14 @@
     - [ ] User Review of v3 Plan <!-- id: 103 -->
 
 - [ ] **Phase 1: The Style Bridge (CLAP)** <!-- id: 104 -->
-    - [ ] Integrate Pre-trained CLAP (Laion/Microsoft) <!-- id: 105 -->
-    - [ ] Implement `StyleEncoder` module (Projection to $D_{model}$) <!-- id: 106 -->
+    - [ ] Integrate Pre-trained CLAP (Use Hidden States $L \times D$) <!-- id: 105 -->
+    - [ ] Implement `StyleEncoder` (Projector $768 \to 512$) <!-- id: 106 -->
     - [ ] Create "Style Token" Extraction pipeline <!-- id: 107 -->
 
 - [ ] **Phase 2: Core Architecture Upgrade** <!-- id: 108 -->
-    - [ ] Implement `CrossAttentionBlock` (Lightweight) <!-- id: 109 -->
-    - [ ] Modify `BiMambaBlock` to accept `style_context` <!-- id: 110 -->
-    - [ ] Update `PsycheTTS` forward pass for `(text, style_audio)` input <!-- id: 111 -->
+    - [ ] Implement `BottleneckStyleBlock` (Cross-Attention) <!-- id: 109 -->
+    - [ ] Implement `SinhalaDurationAdaptor` (Rhythm Control) <!-- id: 110 -->
+    - [ ] Update `PsycheTTS` forward pass with Bottleneck Injection <!-- id: 111 -->
 
 - [ ] **Phase 3: Training Pipeline** <!-- id: 112 -->
     - [ ] Add `StyleConsistencyLoss` (Cosine Sim) <!-- id: 113 -->
