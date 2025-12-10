@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
     <style>
         :root {
             --glass-bg: rgba(255, 255, 255, 0.7);
@@ -104,6 +105,7 @@
                 <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
                     <a href="#context" class="hover:text-blue-600 transition">Context</a>
                     <a href="#pipeline" class="hover:text-blue-600 transition">Pipeline</a>
+                    <a href="#blueprints" class="hover:text-blue-600 transition">Blueprints</a>
                     <a href="#architecture" class="hover:text-blue-600 transition">Architecture</a>
                     <a href="#status" class="hover:text-blue-600 transition">Reality Check</a>
                     <a href="#dataset" class="hover:text-blue-600 transition">Dataset</a>
@@ -244,11 +246,125 @@
         </div>
     </section>
 
+    </section>
+
+    <!-- 2.5 BLUEPRINTS (Mermaid) -->
+    <section id="blueprints" class="py-20 bg-white border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 relative">
+            <span class="section-number">03</span>
+            <div class="flex justify-between items-end mb-12 pl-12">
+                <div>
+                    <h2 class="text-3xl font-bold">System Blueprints</h2>
+                    <p class="text-slate-500 mt-2">Interactive, high-fidelity architectural diagrams.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="setZoom(0.1)"
+                        class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-500"><i
+                            data-lucide="zoom-in"></i></button>
+                    <button onclick="setZoom(-0.1)"
+                        class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-500"><i
+                            data-lucide="zoom-out"></i></button>
+                    <button onclick="resetZoom()"
+                        class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-500"><i
+                            data-lucide="refresh-cw"></i></button>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="flex gap-4 mb-8 pl-12 border-b border-slate-200">
+                <button onclick="switchTab('arch')" id="tab-arch"
+                    class="pb-4 px-2 text-sm font-bold text-blue-600 border-b-2 border-blue-600 transition">Core
+                    Architecture</button>
+                <button onclick="switchTab('pipe')" id="tab-pipe"
+                    class="pb-4 px-2 text-sm font-bold text-slate-500 hover:text-slate-800 transition">Distillation
+                    Pipeline</button>
+            </div>
+
+            <!-- Canvas -->
+            <div
+                class="relative w-full h-[600px] bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-inner group cursor-grab active:cursor-grabbing">
+
+                <!-- Zoom Container -->
+                <div id="blueprint-container"
+                    class="w-full h-full flex items-center justify-center transition-transform duration-200 ease-out origin-center">
+
+                    <!-- Diagram 1: Architecture -->
+                    <div id="arch-diagram" class="blueprint opacity-100 transition-opacity duration-300">
+                        <div class="mermaid">
+                            graph TD
+                            %% Nodes
+                            IN_TEXT[("📄 Input Text\n(Sinhala)")]
+                            IN_REF[("🔊 Reference\n(Emotional Audio)")]
+
+                            subgraph "Encoders"
+                            IPA["🔤 IPA Phonemizer"]
+                            STYLE["🎼 Style Encoder\n(GST/VAE)"]
+                            end
+
+                            subgraph "PsycheTTS Core"
+                            MAMBA["🧠 Bi-Directional Mamba\n(Global Context O(N))"]
+                            FLOW["🌊 Flow Matching Decoder\n(Optimal Transport)"]
+                            end
+
+                            OUT_MEL[("📊 Mel Spectrogram")]
+                            VOCODER["🗣️ HiFi-GAN Vocoder"]
+                            OUT_WAV[("🎵 Output Waveform")]
+
+                            %% Edges
+                            IN_TEXT --> IPA --> MAMBA
+                            IN_REF --> STYLE --> MAMBA
+                            MAMBA -- "Context + Style" --> FLOW
+                            FLOW --> OUT_MEL
+                            OUT_MEL --> VOCODER
+                            VOCODER --> OUT_WAV
+
+                            %% Styles
+                            style MAMBA fill:#dbeafe,stroke:#2563eb,stroke-width:2px;
+                            style FLOW fill:#e0e7ff,stroke:#4f46e5,stroke-width:2px;
+                            style IN_TEXT fill:#f8fafc,stroke:#94a3b8;
+                            style IN_REF fill:#f8fafc,stroke:#94a3b8;
+                            style OUT_WAV fill:#dcfce7,stroke:#22c55e,stroke-width:2px;
+                        </div>
+                    </div>
+
+                    <!-- Diagram 2: Pipeline -->
+                    <div id="pipe-diagram"
+                        class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        <div class="mermaid">
+                            sequenceDiagram
+                            participant U as User
+                            participant H as Web Helper
+                            participant G as Gemini 2.5 API
+                            participant D as Dataset (Local)
+
+                            Note over U, H: Manual Collection Phase
+                            U->>H: 1. Copy Prompt
+                            H-->>U: "Prompt Copied!"
+                            U->>G: 2. Paste & Generate (AI Studio)
+                            G->>U: Returns Audio (Happy/Sad)
+                            U->>H: 3. Copy Filename
+                            H-->>U: "happy_leda_1.wav"
+                            U->>D: 4. Save Audio File
+                            U->>H: 5. Click "Log to CSV"
+                            H->>D: Appends Metadata Record
+                            Note right of D: Training Data Ready
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="absolute bottom-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded text-xs text-slate-400 font-mono border border-slate-100">
+                    Scroll to Zoom • Drag to Pan
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 3. ARCHITECTURE (Theoretical) -->
     <section id="architecture" class="py-20 bg-slate-900 text-white">
         <div class="max-w-5xl mx-auto px-4 relative">
-            <span class="section-number opacity-20 text-white">03</span>
-            <h2 class="text-3xl font-bold mb-6 pl-12 text-white">Proposed Architecture</h2>
+            <span class="section-number opacity-20 text-white">04</span>
+            <h2 class="text-3xl font-bold mb-6 pl-12 text-white">Architecture Details</h2>
             <p class="pl-12 text-slate-400 mb-12 max-w-2xl">
                 We are actively implementing the following stack to solve the "Transformer Bottleneck" (O(N²)
                 complexity).
@@ -293,7 +409,7 @@
     <!-- 4. REALITY CHECK (New Section) -->
     <section id="status" class="py-20 bg-amber-50">
         <div class="max-w-6xl mx-auto px-4 relative">
-            <span class="section-number text-amber-900/10">04</span>
+            <span class="section-number text-amber-900/10">05</span>
             <h2 class="text-3xl font-bold mb-12 pl-12 text-amber-900">Reality Check: Current Status</h2>
 
             <div class="grid md:grid-cols-2 gap-8">
@@ -356,7 +472,7 @@
     <!-- 5. DATASET DEMO -->
     <section id="dataset" class="py-20 bg-white">
         <div class="max-w-4xl mx-auto px-4 relative">
-            <span class="section-number">05</span>
+            <span class="section-number">06</span>
             <div class="flex items-end justify-between mb-12">
                 <div>
                     <h2 class="text-3xl font-bold pl-12">Evidence: Collected Samples</h2>
@@ -466,6 +582,83 @@
 
     <script>
         lucide.createIcons();
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+
+        // --- Mermaid Interactions ---
+        let currentScale = 1;
+        let isDragging = false;
+        let startX, startY, translateX = 0, translateY = 0;
+        const container = document.getElementById('blueprint-container');
+
+        // Zoom
+        function setZoom(delta) {
+            currentScale += delta;
+            currentScale = Math.max(0.5, Math.min(3, currentScale));
+            updateTransform();
+        }
+
+        function resetZoom() {
+            currentScale = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+
+        function updateTransform() {
+            container.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale})`;
+        }
+
+        // Pan
+        container.parentElement.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+            container.parentElement.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            updateTransform();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.parentElement.style.cursor = 'grab';
+        });
+
+        // Tabs
+        function switchTab(tab) {
+            const arch = document.getElementById('arch-diagram');
+            const pipe = document.getElementById('pipe-diagram');
+            const btnArch = document.getElementById('tab-arch');
+            const btnPipe = document.getElementById('tab-pipe');
+
+            if (tab === 'arch') {
+                arch.classList.remove('opacity-0', 'hidden');
+                arch.classList.add('opacity-100');
+                pipe.classList.add('opacity-0', 'hidden');
+                pipe.classList.remove('opacity-100');
+
+                btnArch.classList.add('text-blue-600', 'border-blue-600');
+                btnArch.classList.remove('text-slate-500', 'hover:text-slate-800');
+                btnPipe.classList.remove('text-blue-600', 'border-blue-600');
+                btnPipe.classList.add('text-slate-500', 'hover:text-slate-800');
+            } else {
+                pipe.classList.remove('opacity-0', 'hidden');
+                pipe.classList.add('opacity-100', 'flex'); // flex needed for centering
+                arch.classList.add('opacity-0', 'hidden');
+                arch.classList.remove('opacity-100');
+
+                btnPipe.classList.add('text-blue-600', 'border-blue-600');
+                btnPipe.classList.remove('text-slate-500', 'hover:text-slate-800');
+                btnArch.classList.remove('text-blue-600', 'border-blue-600');
+                btnArch.classList.add('text-slate-500', 'hover:text-slate-800');
+            }
+            resetZoom();
+        }
     </script>
 </body>
 
