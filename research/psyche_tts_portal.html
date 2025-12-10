@@ -302,7 +302,8 @@
                     class="w-full h-full absolute top-0 left-0 transition-transform duration-75 ease-linear origin-center flex items-center justify-center">
 
                     <!-- Diagram 1: Context (Why we are here) -->
-                    <div id="context-diagram" class="blueprint w-full h-full flex items-center justify-center">
+                    <div id="context-diagram"
+                        class="blueprint w-full h-full flex items-center justify-center transition-opacity duration-300 absolute inset-0 bg-slate-50">
                         <div class="mermaid">
                             mindmap
                             root((PsycheTTS))
@@ -324,7 +325,7 @@
                     </div>
                     <!-- Diagram 2: Architecture -->
                     <div id="arch-diagram"
-                        class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        class="blueprint opacity-0 pointer-events-none absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-300 bg-slate-50">
                         <div class="mermaid">
                             ---
                             config:
@@ -369,7 +370,7 @@
 
                     <!-- Diagram 3: Pipeline -->
                     <div id="pipe-diagram"
-                        class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        class="blueprint opacity-0 pointer-events-none absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-300 bg-slate-50">
                         <div class="mermaid">
                             sequenceDiagram
                             participant U as User
@@ -393,7 +394,7 @@
 
                     <!-- Diagram 4: Implementation Plan -->
                     <div id="impl-diagram"
-                        class="blueprint opacity-0 hidden absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        class="blueprint opacity-0 pointer-events-none absolute inset-0 w-full h-full flex items-center justify-center transition-opacity duration-300 bg-slate-50">
                         <div class="mermaid">
                             gantt
                             title Research Roadmap
@@ -733,10 +734,10 @@
         });
         // Tabs
         function switchTab(tabId) {
-            // Hide all diagrams
+            // Hide all diagrams visually but keep them in layout for rendering
             document.querySelectorAll('.blueprint').forEach(el => {
-                el.classList.add('opacity-0', 'hidden');
-                el.classList.remove('opacity-100', 'flex');
+                el.classList.add('opacity-0', 'pointer-events-none');
+                el.classList.remove('opacity-100', 'pointer-events-auto', 'z-10');
             });
 
             // Deactivate all buttons
@@ -750,8 +751,8 @@
             const targetBtn = document.getElementById('tab-' + tabId);
 
             if (target && targetBtn) {
-                target.classList.remove('opacity-0', 'hidden');
-                target.classList.add('opacity-100', 'flex');
+                target.classList.remove('opacity-0', 'pointer-events-none');
+                target.classList.add('opacity-100', 'pointer-events-auto', 'z-10');
 
                 targetBtn.classList.add('text-blue-600', 'border-blue-600');
                 targetBtn.classList.remove('text-slate-500', 'hover:text-slate-800');
