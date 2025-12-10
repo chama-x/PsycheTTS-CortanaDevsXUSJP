@@ -3,1026 +3,460 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PsycheTTS v2: The Emotional Engine</title>
-    <!-- Premium Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=Playfair+Display:ital,wght@1,400&display=swap"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PsycheTTS Research Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            /* Apple-esque Color System */
-            --bg-base: #FBFBFD;
-            /* Apple "Snow" */
-            --bg-glass: rgba(255, 255, 255, 0.85);
-            --fg-primary: #1D1D1F;
-            --fg-secondary: #86868B;
-            --fg-tertiary: #D2D2D7;
-
-            /* Brand Colors (Leduca Refined) */
-            --brand-orange: #FF9F0A;
-            /* macOS Orange */
-            --brand-blue: #007AFF;
-            /* macOS Blue */
-            --brand-purple: #AF52DE;
-            /* macOS Purple */
-            --brand-teal: #5AC8FA;
-            /* macOS Teal */
-
-            /* Physics */
-            --ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1.0);
-            --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-            /* Dimensions */
-            --radius-app: 40px;
-            --radius-card: 24px;
-            --content-width: 980px;
-            /* Classic Apple container width */
-        }
-
-        /* --- Reset & Base --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            outline: none;
-            -webkit-font-smoothing: antialiased;
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --accent: #2563eb;
+            --accent-soft: #dbeafe;
         }
 
         body {
-            background-color: var(--bg-base);
-            color: var(--fg-primary);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            overflow-x: hidden;
-            font-size: 17px;
-            line-height: 1.47;
-            letter-spacing: -0.022em;
+            font-family: 'Inter', sans-serif;
+            background-color: #FAFAFA;
+            color: #171717;
+            scroll-behavior: smooth;
         }
 
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-weight: 600;
-            letter-spacing: -0.015em;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .section-wrapper {
-            position: relative;
-            width: 100%;
-            padding: 120px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: var(--content-width);
-            position: relative;
-            z-index: 2;
-        }
-
-        /* --- Typography Hierarchy --- */
-        .hero-title {
-            font-size: 80px;
-            line-height: 1.05;
-            font-weight: 800;
-            background: linear-gradient(135deg, #1D1D1F 0%, #434344 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .hero-subtitle {
-            font-size: 28px;
-            line-height: 1.3;
-            color: var(--fg-secondary);
-            font-weight: 400;
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .section-eyebrow {
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--brand-orange);
-            margin-bottom: 16px;
-            display: block;
-            text-align: center;
-        }
-
-        .section-headline {
-            font-size: 48px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        /* --- UI Components: The "Ive" DNA --- */
-
-        /* 1. Glass Card - Higher Contrast */
         .glass-card {
-            background: rgba(255, 255, 255, 0.98);
-            /* Max contrast while keeping subtle blur */
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            /* Sharper border */
-            border-radius: var(--radius-card);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-            /* Deeper shadow */
-            padding: 40px;
-            transition: transform 0.6s var(--ease-apple), box-shadow 0.6s var(--ease-apple);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .glass-card:hover {
-            transform: scale(1.01) translateY(-3px);
-            /* Subtler lift */
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        /* 2. Sticky Nav Dock */
-        .nav-dock {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(29, 29, 31, 0.8);
-            /* Darker glass for nav */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 12px 24px;
-            border-radius: 50px;
-            display: flex;
-            gap: 30px;
-            z-index: 100;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s var(--ease-apple);
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #2563eb, #7c3aed);
         }
 
-        /* ... (skipping nav-item styles as they are fine) ... */
-        .nav-item {
-            color: rgba(255, 255, 255, 0.6);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: color 0.2s;
-            position: relative;
-        }
-
-        .nav-item.active,
-        .nav-item:hover {
-            color: white;
-        }
-
-        .nav-item.active::after {
-            content: '';
+        .section-number {
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            opacity: 0.1;
+            font-size: 4rem;
+            line-height: 1;
             position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            background: var(--brand-orange);
-            border-radius: 50%;
+            top: -20px;
+            left: -20px;
+            pointer-events: none;
         }
 
-        /* --- Visualizations --- */
-
-        /* 3D Layers View - Fixed Constraints */
-        .layer-stack {
-            perspective: 1000px;
-            height: 550px;
-            /* Optimized height */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+        ::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .stack-group {
-            position: relative;
-            width: 300px;
-            height: 400px;
-            transform-style: preserve-3d;
-            transform: rotateX(60deg) rotateZ(-30deg) rotateY(10deg);
-            transition: transform 0.5s var(--ease-apple);
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
 
-        .stack-group:hover {
-            /* Tighter hover state to prevent clipping */
-            transform: rotateX(55deg) rotateZ(-25deg) rotateY(8deg) scale(0.98);
+        ::-webkit-scrollbar-thumb {
+            background: #c7c7c7;
+            border-radius: 4px;
         }
 
-        .layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        .diagram-node {
+            border: 2px solid #e5e7eb;
             background: white;
-            border: 1px solid rgba(0, 0, 0, 0.15);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.5s var(--ease-apple), opacity 0.5s;
-            opacity: 0.98;
-            /* More solid layers */
-            backdrop-filter: blur(5px);
-        }
-
-        .layer-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        .layer-label {
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--fg-secondary);
-            text-transform: uppercase;
-        }
-
-        /* Stack positioning - Compact Spread */
-        .l1 {
-            transform: translateZ(0px);
-            background: #FFFFFF;
-            z-index: 1;
-        }
-
-        .l2 {
-            transform: translateZ(50px);
-            background: #F5FAFF;
-            z-index: 2;
-            border: 2px solid var(--brand-blue);
-            color: var(--brand-blue);
-        }
-
-        .l3 {
-            transform: translateZ(100px);
-            background: #FFF8F0;
-            z-index: 3;
-            border: 2px solid var(--brand-orange);
-            color: var(--brand-orange);
-        }
-
-        .l4 {
-            transform: translateZ(150px);
-            background: #F8F0FF;
-            z-index: 4;
-            border: 2px solid var(--brand-purple);
-            color: var(--brand-purple);
-        }
-
-        /* Gentle Hover Expansion (Significantly Reduced) */
-        .stack-group:hover .l1 {
-            transform: translateZ(0px) translateY(10px);
-        }
-
-        .stack-group:hover .l2 {
-            transform: translateZ(60px) translateY(-15px);
-        }
-
-        .stack-group:hover .l3 {
-            transform: translateZ(120px) translateY(-40px);
-        }
-
-        .stack-group:hover .l4 {
-            transform: translateZ(180px) translateY(-65px);
-        }
-
-        /* Playground Input - iOS Style */
-        .ios-input-wrapper {
-            background: #F2F2F7;
-            /* iOS System Gray 6 */
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .ios-input {
-            background: transparent;
-            border: none;
-            font-size: 18px;
-            width: 100%;
-            color: var(--fg-primary);
-            font-family: inherit;
-        }
-
-        .send-btn {
-            width: 32px;
-            height: 32px;
-            background: var(--brand-blue);
-            border-radius: 50%;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s var(--ease-bounce);
-        }
-
-        .send-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .send-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* Tokens Viz */
-        .token-stream {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            min-height: 60px;
-        }
-
-        .token {
-            background: white;
-            border: 1px solid #E5E5EA;
-            padding: 6px 12px;
             border-radius: 8px;
-            font-family: 'SF Mono', 'Menlo', monospace;
-            font-size: 13px;
-            color: var(--brand-purple);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            animation: tokenPop 0.4s var(--ease-bounce) backwards;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
         }
-
-        @keyframes tokenPop {
-            0% {
-                transform: scale(0);
-                opacity: 0;
-            }
-
-            80% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        /* Audio Waves */
-        .audio-viz {
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            margin-top: 20px;
-        }
-
-        .bar {
-            width: 4px;
-            background: var(--brand-orange);
-            border-radius: 2px;
-            animation: waveform 1s ease-in-out infinite;
-            height: 10%;
-        }
-
-        @keyframes waveform {
-
-            0%,
-            100% {
-                height: 10%;
-            }
-
-            50% {
-                height: 100%;
-            }
-        }
-
-        /* --- Sections Layout --- */
-        #hero {
-            min-height: 90vh;
-            justify-content: center;
-        }
-
-        #architecture {
-            background: white;
-        }
-
-        #playground {
-            background: #000;
-            color: white;
-        }
-
-        /* Dark Mode Context */
     </style>
 </head>
 
-<body>
+<body class="bg-slate-50 relative">
 
-    <!-- NAV DOCK (Floating) -->
-    <nav class="nav-dock">
-        <a href="#hero" class="nav-item active">Intro</a>
-        <a href="#the-wall" class="nav-item">Why?</a>
-        <a href="#architecture" class="nav-item">Core</a>
-        <a href="#audio-comparison" class="nav-item">Compare</a>
-        <a href="#playground" class="nav-item">Play</a>
-        <a href="#horizon" class="nav-item">Future</a>
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🧠</span>
+                    <span class="font-bold text-lg tracking-tight">PsycheTTS <span class="text-blue-600">Cortana
+                            R&D</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                    <a href="#context" class="hover:text-blue-600 transition">Context</a>
+                    <a href="#pipeline" class="hover:text-blue-600 transition">Pipeline</a>
+                    <a href="#architecture" class="hover:text-blue-600 transition">Architecture</a>
+                    <a href="#status" class="hover:text-blue-600 transition">Reality Check</a>
+                    <a href="#dataset" class="hover:text-blue-600 transition">Dataset</a>
+                    <a href="#collaboration" class="hover:text-blue-600 transition">Collaborate</a>
+                </div>
+                <a href="https://github.com/your-repo/PsycheTTS" target="_blank"
+                    class="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:scale-105 transition transform">
+                    GitHub Repo
+                </a>
+            </div>
+        </div>
     </nav>
 
-    <!-- SECTION 1: HERO -->
-    <section id="hero" class="section-wrapper">
-        <div class="container" style="text-align: center;">
-            <div style="font-size: 80px; margin-bottom: 20px;">🗣️</div>
-            <h1 class="hero-title">The Soul of Speech.</h1>
-            <p class="hero-subtitle">PsycheTTS v2 brings human emotion to synthetic voice,<br>at the speed of thought.
+    <!-- HERO -->
+    <header class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold uppercase tracking-wide mb-6">
+            v2.0 Research Preview
+        </div>
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-6">
+            Synthetic Voice with a <br>
+            <span class="gradient-text">Human Soul.</span>
+        </h1>
+        <p class="mt-4 max-w-2xl mx-auto text-xl text-slate-500">
+            Cortana R&D's initiative to bring High-Fidelity Emotional Speech to Edge Devices.
+            <br>
+            Focusing on Low-Resource Languages (Sinhala) via Knowledge Distillation.
+        </p>
+
+        <div class="mt-10 flex justify-center gap-4">
+            <a href="#dataset"
+                class="flex items-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-500/20">
+                <i data-lucide="play-circle"></i> Listen to Demos
+            </a>
+            <a href="#status"
+                class="flex items-center gap-2 bg-white text-slate-700 border border-slate-200 px-8 py-3 rounded-xl font-semibold hover:bg-slate-50 transition">
+                Status Report
+            </a>
+        </div>
+    </header>
+
+    <!-- 1. THE CONTEXT -->
+    <section id="context" class="py-20 bg-white">
+        <div class="max-w-5xl mx-auto px-4 relative">
+            <span class="section-number">01</span>
+            <h2 class="text-3xl font-bold mb-8 pl-12">The Context</h2>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">The Challenge</h3>
+                    <p class="text-lg text-slate-600 leading-relaxed mb-6">
+                        We are building emotional voice interfaces for local, offline devices. While Cloud APIs (Gemini,
+                        GPT-4o) offer incredible emotion, they are <strong>too slow</strong> and <strong>too
+                            expensive</strong> for continuous, private interaction.
+                    </p>
+                    <p class="text-lg text-slate-600 leading-relaxed">
+                        For <strong>Sinhala</strong>, the problem is harder: there are no studio-quality emotional
+                        datasets available to train a model from scratch.
+                    </p>
+                </div>
+                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100">
+                    <h3 class="font-semibold text-slate-900 mb-4">Project Goals</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-green-500 shrink-0 mt-1"></i>
+                            <span class="text-slate-600 text-sm"><strong>Latency:</strong> Target < 100ms on Edge
+                                    Hardware.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-green-500 shrink-0 mt-1"></i>
+                            <span class="text-slate-600 text-sm"><strong>Emotion:</strong> Match the "Sadness" or "Joy"
+                                of Gemini Pro.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="check-circle-2" class="text-green-500 shrink-0 mt-1"></i>
+                            <span class="text-slate-600 text-sm"><strong>Data:</strong> Verify a synthetic data
+                                collection pipeline.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. THE PIPELINE (Solution) -->
+    <section id="pipeline" class="py-20 bg-slate-50">
+        <div class="max-w-6xl mx-auto px-4 relative">
+            <span class="section-number">02</span>
+            <h2 class="text-3xl font-bold mb-12 pl-12">The Distillation Pipeline</h2>
+
+            <!-- Process Diagram -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center mb-16">
+
+                <div class="diagram-node border-blue-200 bg-blue-50">
+                    <div class="text-xs text-blue-500 uppercase font-bold mb-1">Source</div>
+                    <div class="text-xl mb-1">🤖</div>
+                    <div>Gemini 2.5 Pro</div>
+                    <div class="text-xs text-slate-400 mt-2">Generate "Ground Truth"</div>
+                </div>
+
+                <div class="flex justify-center text-slate-300">
+                    <i data-lucide="arrow-right" class="w-8 h-8"></i>
+                </div>
+
+                <div class="diagram-node border-orange-200 bg-orange-50 ring-2 ring-orange-500 ring-offset-2">
+                    <div class="text-xs text-orange-500 uppercase font-bold mb-1">Current Focus</div>
+                    <div class="text-xl mb-1">🛠️</div>
+                    <div>Collector CLI</div>
+                    <div class="text-xs text-slate-400 mt-2">Filter & Label Data</div>
+                </div>
+
+                <div class="flex justify-center text-slate-300">
+                    <i data-lucide="arrow-right" class="w-8 h-8"></i>
+                </div>
+
+                <div class="diagram-node border-slate-200 bg-white opacity-70">
+                    <div class="text-xs text-slate-500 uppercase font-bold mb-1">Future</div>
+                    <div class="text-xl mb-1">🧠</div>
+                    <div>PsycheTTS Model</div>
+                    <div class="text-xs text-slate-400 mt-2">Training Student</div>
+                </div>
+
+            </div>
+
+            <div class="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+                <h3 class="text-xl font-bold mb-4">Synthetic Ground Truth</h3>
+                <p class="text-slate-600">
+                    We have successfully established the <strong>Collector</strong> phase. By using the Gemini 2.5 Pro
+                    API, we are creating a "golden dataset" of Sinhala speech that captures subtle emotional cues
+                    (breathiness in sadness, pitch variance in joy).
+                </p>
+                <p class="text-slate-600 mt-4">
+                    <strong>Why?</strong> It's impossible to manually record thousands of emotional lines with
+                    consistent quality. Gemini acts as our "Infinite Actor".
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. ARCHITECTURE (Theoretical) -->
+    <section id="architecture" class="py-20 bg-slate-900 text-white">
+        <div class="max-w-5xl mx-auto px-4 relative">
+            <span class="section-number opacity-20 text-white">03</span>
+            <h2 class="text-3xl font-bold mb-6 pl-12 text-white">Proposed Architecture</h2>
+            <p class="pl-12 text-slate-400 mb-12 max-w-2xl">
+                We are actively implementing the following stack to solve the "Transformer Bottleneck" (O(N²)
+                complexity).
             </p>
 
-            <div style="margin-top: 60px; display: flex; gap: 40px; justify-content: center;">
-                <div style="text-align: center;">
-                    <div style="font-size: 40px; font-weight: 800; color: var(--brand-blue);">45ms</div>
-                    <div
-                        style="font-size: 13px; color: var(--fg-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
-                        Latency</div>
-                </div>
-                <div style="width: 1px; background: #E5E5EA;"></div>
-                <div style="text-align: center;">
-                    <div style="font-size: 40px; font-weight: 800; color: var(--brand-orange);">O(N)</div>
-                    <div
-                        style="font-size: 13px; color: var(--fg-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
-                        Complexity</div>
-                </div>
-                <div style="width: 1px; background: #E5E5EA;"></div>
-                <div style="text-align: center;">
-                    <div style="font-size: 40px; font-weight: 800; color: var(--brand-purple);">Zero</div>
-                    <div
-                        style="font-size: 13px; color: var(--fg-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">
-                        Shot Sinhala</div>
-                </div>
-            </div>
-
-            <div style="margin-top: 100px; opacity: 0.5;">
-                <p>Scroll to explore</p>
-                <div style="font-size: 20px; margin-top: 10px;">↓</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW SECTION: THE WALL (Problem Space) -->
-    <section id="the-wall" class="section-wrapper" style="background: #1C1C1E; color: white;">
-        <div class="container">
-            <span class="section-eyebrow">The Wall</span>
-            <h2 class="section-headline" style="color: white;">The Transformer Bottleneck.</h2>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;">
-                <div>
-                    <p style="font-size: 24px; line-height: 1.5; color: #AEAEB2; margin-bottom: 30px;">
-                        For years, we've accepted a painful trade-off: <br>
-                        <strong style="color: white;">Quality</strong> meant <span
-                            style="color: #FF453A;">Slow</span>.<br>
-                        <strong style="color: white;">Speed</strong> meant <span style="color: #FF453A;">Robotic</span>.
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Tech 1 -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-2 bg-purple-500/20 rounded-lg text-purple-400"><i data-lucide="git-merge"></i>
+                        </div>
+                        <h3 class="text-xl font-bold">Bi-Directional Mamba</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        <strong>Hypothesis:</strong> Mamba's State Space Model can capture global emotional context
+                        without the quadratic cost of Attention.
                     </p>
-                    <p style="font-size: 18px; color: #8E8E93; line-height: 1.6;">
-                        Attention mechanisms scale <strong style="color: #FF9F0A;">Quadratically (N²)</strong>. As the
-                        sentence gets longer, the model gets exponentially slower. This made "Streaming Emotion"
-                        impossible on mobile devices.
-                    </p>
+                    <div class="flex items-center gap-2 text-xs text-slate-500 mt-4">
+                        <span class="w-2 h-2 bg-yellow-500 rounded-full"></span> Status: In Research Phase
+                    </div>
                 </div>
 
-                <!-- Visualization: Quadratic Curve vs Linear -->
-                <div class="glass-card"
-                    style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); height: 300px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 0;">
-
-                    <!-- Quadratic Curve -->
-                    <svg viewBox="0 0 100 100"
-                        style="position: absolute; bottom:0; left:0; width: 100%; height: 100%; opacity: 0.5;"
-                        preserveAspectRatio="none">
-                        <path d="M0,100 Q80,100 100,0" fill="none" stroke="#FF453A" stroke-width="2"
-                            stroke-dasharray="5,5" />
-                        <text x="80" y="20" fill="#FF453A" font-size="4" font-family="Inter">Transformers (N²)</text>
-                    </svg>
-
-                    <!-- Linear Line (PsycheTTS) -->
-                    <svg viewBox="0 0 100 100" style="position: absolute; bottom:0; left:0; width: 100%; height: 100%;"
-                        preserveAspectRatio="none">
-                        <line x1="0" y1="100" x2="100" y2="80" stroke="#30D158" stroke-width="3" />
-                        <text x="60" y="75" fill="#30D158" font-size="4" font-family="Inter"
-                            font-weight="bold">PsycheTTS (N)</text>
-                    </svg>
-
-                    <div style="position: absolute; bottom: 20px; left: 20px; font-size: 12px; color: #636366;">Input
-                        Length (Time) →</div>
-                    <div
-                        style="position: absolute; top: 20px; left: 20px; font-size: 12px; color: #636366; transform: rotate(-90deg); transform-origin: top left;">
-                        Compute Cost ↑</div>
+                <!-- Tech 2 -->
+                <div class="bg-slate-800/50 p-8 rounded-2xl border border-slate-700">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-2 bg-blue-500/20 rounded-lg text-blue-400"><i data-lucide="waves"></i></div>
+                        <h3 class="text-xl font-bold">Flow Matching Decoder</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-4">
+                        <strong>Hypothesis:</strong> Iterative Flow Matching (Optimal Transport) will yield higher audio
+                        fidelity than standard GANs or VITS, with fewer steps than Diffusion.
+                    </p>
+                    <div class="flex items-center gap-2 text-xs text-slate-500 mt-4">
+                        <span class="w-2 h-2 bg-yellow-500 rounded-full"></span> Status: Implementation Pending
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- NEW SECTION: THE PROCESS (Sketch/Blueprint) -->
-    <section id="the-process" class="section-wrapper"
-        style="background: #F2F2F7; border-top: 1px solid #E5E5EA; border-bottom: 1px solid #E5E5EA;">
-        <div class="container">
-            <span class="section-eyebrow">The Process</span>
-            <h2 class="section-headline">Thinking in Flow.</h2>
 
-            <div style="column-count: 2; column-gap: 40px;">
-                <div class="glass-card" style="break-inside: avoid; margin-bottom: 40px;">
-                    <h3 style="margin-bottom: 15px;">1. The "Texture" Problem</h3>
-                    <p style="font-size: 16px; color: var(--fg-secondary);">
-                        Mamba excels at global context ("How sad is this sentence?"), but it blurred the sharp edges of
-                        phonemes ("T", "K", "P").
-                        <br><br>
-                        <strong>Solution:</strong> We injected a lightweight <strong
-                            style="color: var(--brand-blue);">Conv1d Context Window</strong> before the State Space
-                        Model. This gave us the "Best of Both Worlds": Crispy consonants and deep emotional resonance.
-                    </p>
-                </div>
+    <!-- 4. REALITY CHECK (New Section) -->
+    <section id="status" class="py-20 bg-amber-50">
+        <div class="max-w-6xl mx-auto px-4 relative">
+            <span class="section-number text-amber-900/10">04</span>
+            <h2 class="text-3xl font-bold mb-12 pl-12 text-amber-900">Reality Check: Current Status</h2>
 
-                <div class="glass-card" style="break-inside: avoid; margin-bottom: 40px;">
-                    <h3 style="margin-bottom: 15px;">2. The "Speed" Hack</h3>
-                    <p style="font-size: 16px; color: var(--fg-secondary);">
-                        Diffusion models need 50+ steps to denoise audio. Real-time requires < 5. <br><br>
-                            <strong>Solution:</strong> We adopted <strong
-                                style="color: var(--brand-purple);">Adversarial Consistency Matching</strong>. By
-                            training a "Critic" (Discriminator) to penalize slightly blurry outputs, we force the
-                            generator to jump to the perfect audio waveform in just 2 steps.
-                    </p>
-                </div>
+            <div class="grid md:grid-cols-2 gap-8">
 
-                <div class="glass-card" style="break-inside: avoid; margin-bottom: 40px;">
-                    <h3 style="margin-bottom: 15px;">3. The Universal Token</h3>
-                    <p style="font-size: 16px; color: var(--fg-secondary);">
-                        Sinhala is a "Low Resource" language. Training from scratch requires thousands of hours we don't
-                        have.
-                        <br><br>
-                        <strong>Solution:</strong> We stripped language down to its atoms: <strong
-                            style="color: var(--brand-orange);">IPA Phonemes</strong>. By mapping Sinhala characters to
-                        IPA, PsycheTTS "reads" Sinhala using its knowledge of global sound structures. Zero-shot
-                        transfer unlocked.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 2: ARCHITECTURE (Progressive Disclosure) -->
-    <section id="architecture" class="section-wrapper">
-        <div class="container">
-            <span class="section-eyebrow">The Engine</span>
-            <h2 class="section-headline">Reimagined from the Core.</h2>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;">
-
-                <!-- Left: Explanation -->
-                <div>
-                    <h3 style="font-size: 32px; margin-bottom: 20px;">BiMamba 2.0</h3>
-                    <p style="color: var(--fg-secondary); font-size: 20px; margin-bottom: 30px;">
-                        We replaced the quadratic bottleneck of Transformers with a <strong>Linear-Time State Space
-                            Model</strong>.
-                        It reads the emotional arc without pausing.
-                    </p>
-
-                    <div class="glass-card">
-                        <h4 style="margin-bottom: 10px; color: var(--brand-orange);">Conv1d Texture</h4>
-                        <p style="font-size: 15px; color: var(--fg-secondary);">Captures crisp local phoneme details
-                            like "p", "t", "k".</p>
-                        <div style="height: 1px; background: #F5F5F7; margin: 20px 0;"></div>
-                        <h4 style="margin-bottom: 10px; color: var(--brand-purple);">Mamba Global</h4>
-                        <p style="font-size: 15px; color: var(--fg-secondary);">Maintains the "sadness" or "joy" across
-                            the entire sentence.</p>
-                    </div>
-                </div>
-
-                <!-- Right: 3D Visualization -->
-                <div class="layer-stack">
-                    <div class="stack-group">
-                        <!-- Top Layer: Output -->
-                        <div class="layer l4">
-                            <div class="layer-icon">🔊</div>
-                            <div class="layer-label">Flow Matched Audio</div>
-                        </div>
-                        <!-- State Layer -->
-                        <div class="layer l3">
-                            <div class="layer-icon">🌩️</div>
-                            <div class="layer-label">Bi-Directional State Space</div>
-                        </div>
-                        <!-- Conv Layer -->
-                        <div class="layer l2">
-                            <div class="layer-icon">🔎</div>
-                            <div class="layer-label">Conv1d Features</div>
-                        </div>
-                        <!-- Input Layer -->
-                        <div class="layer l1">
-                            <div class="layer-icon">🔡</div>
-                            <div class="layer-label">IPA Tokens</div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-
-
-    <!-- SECTION 2.5: BENCHMARKS -->
-    <section id="benchmarks" class="section-wrapper" style="background: #F5F5F7;">
-        <div class="container">
-            <span class="section-eyebrow">Performance</span>
-            <h2 class="section-headline">Faster than Real-Time.</h2>
-
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px;">
-
-                <!-- Chart 1: Latency -->
-                <div class="glass-card" style="padding: 30px;">
-                    <h4 style="margin-bottom: 20px; color: var(--fg-secondary);">Inference Latency (ms)</h4>
-                    <div style="display: flex; flex-direction: column; gap: 15px;">
-
-                        <!-- Bar 1 -->
-                        <div>
-                            <div
-                                style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 5px;">
-                                <span>Tacotron 2</span>
-                                <span>350ms</span>
-                            </div>
-                            <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px;">
-                                <div style="width: 100%; height: 100%; background: #D1D1D6; border-radius: 4px;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Bar 2 -->
-                        <div>
-                            <div
-                                style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 5px;">
-                                <span>FastSpeech 2</span>
-                                <span>120ms</span>
-                            </div>
-                            <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px;">
-                                <div style="width: 34%; height: 100%; background: #8E8E93; border-radius: 4px;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Bar 3 (Winner) -->
-                        <div>
-                            <div
-                                style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: var(--brand-orange);">
-                                <span>PsycheTTS v2</span>
-                                <span>45ms</span>
-                            </div>
-                            <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px;">
-                                <div
-                                    style="width: 12%; height: 100%; background: var(--brand-orange); border-radius: 4px; box-shadow: 0 0 10px rgba(255, 159, 10, 0.4);">
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <p style="margin-top: 20px; font-size: 13px; color: var(--fg-secondary); line-height: 1.5;">
-                        Achieves <strong style="color: var(--fg-primary);">0.15x Real-Time Factor</strong> on CPU,
-                        enabling instant voice interaction on edge devices.
-                    </p>
-                </div>
-
-                <!-- Metric 2: Size -->
-                <div class="glass-card"
-                    style="padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-                    <div
-                        style="font-size: 60px; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; background: linear-gradient(135deg, #AF52DE, #5856D6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                        85MB
-                    </div>
-                    <div style="font-size: 14px; font-weight: 600; color: var(--fg-primary);">Total Footprint</div>
-                    <p style="font-size: 13px; color: var(--fg-secondary); margin-top: 10px; max-width: 200px;">
-                        Fits comfortably in L2 Cache of modern mobile processors.
-                    </p>
-                </div>
-
-                <!-- Metric 3: MOS -->
-                <div class="glass-card"
-                    style="padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-                    <div
-                        style="font-size: 60px; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; background: linear-gradient(135deg, #34C759, #30B0C7); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                        4.48
-                    </div>
-                    <div style="font-size: 14px; font-weight: 600; color: var(--fg-primary);">Mean Opinion Score</div>
-                    <p style="font-size: 13px; color: var(--fg-secondary); margin-top: 10px; max-width: 200px;">
-                        Indistinguishable from human speech (4.5) in blind tests.
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 2.7: AUDIO COMPARISON -->
-    <section id="audio-comparison" class="section-wrapper">
-        <div class="container">
-            <span class="section-eyebrow">Fidelity</span>
-            <h2 class="section-headline">Hear the Difference.</h2>
-            <p style="text-align: center; color: var(--fg-secondary); max-width: 600px; margin: 0 auto 60px;">
-                Comparing <strong>PsycheTTS v2 (85MB)</strong> against the massive <strong>Gemini 2.5 Pro
-                    (Cloud)</strong> baseline. Note the retention of emotional nuance in our lightweight model.
-            </p>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-
-                <!-- Sample 1: Sinhala -->
-                <div class="glass-card">
-                    <div
-                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-                        <h4 style="margin: 0;">Sinhala Zero-Shot</h4>
-                        <span
-                            style="font-size: 12px; font-weight: 600; background: #F2F2F7; padding: 4px 8px; border-radius: 6px; color: var(--fg-secondary);">Emotion:
-                            Melancholy</span>
-                    </div>
-                    <p style="font-style: italic; color: var(--fg-secondary); margin-bottom: 30px; font-size: 15px;">"මට
-                        ගෙදර යන්න ඕනෙ... මට මහන්සියි." (I want to go home... I'm tired.)</p>
-
-                    <!-- Player 1: Reference -->
-                    <div style="margin-bottom: 20px;">
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #8E8E93; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
-                            Gemini 2.5 Pro (Reference)</div>
-                        <audio controls style="width: 100%; height: 36px; border-radius: 18px;">
-                            <source src="assets/audio/ref_gemini_sinhala.m4a" type="audio/mp4">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-
-                    <!-- Player 2: Ours -->
-                    <div>
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: var(--brand-orange); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
-                            PsycheTTS v2 (Ours)</div>
-                        <audio controls style="width: 100%; height: 36px; border-radius: 18px;">
-                            <source src="assets/audio/ours_psyche_sinhala.m4a" type="audio/mp4">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-
-                <!-- Sample 2: English -->
-                <div class="glass-card">
-                    <div
-                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
-                        <h4 style="margin: 0;">English Emotional</h4>
-                        <span
-                            style="font-size: 12px; font-weight: 600; background: #F2F2F7; padding: 4px 8px; border-radius: 6px; color: var(--fg-secondary);">Emotion:
-                            Excitement</span>
-                    </div>
-                    <p style="font-style: italic; color: var(--fg-secondary); margin-bottom: 30px; font-size: 15px;">"I
-                        can't believe it! The results are finally here and they look amazing!"</p>
-
-                    <!-- Player 1: Reference -->
-                    <div style="margin-bottom: 20px;">
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: #8E8E93; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
-                            Gemini 2.5 Pro (Reference)</div>
-                        <audio controls style="width: 100%; height: 36px; border-radius: 18px;">
-                            <source src="assets/audio/ref_gemini_english.m4a" type="audio/mp4">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-
-                    <!-- Player 2: Ours -->
-                    <div>
-                        <div
-                            style="font-size: 11px; font-weight: 700; color: var(--brand-orange); text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
-                            PsycheTTS v2 (Ours)</div>
-                        <audio controls style="width: 100%; height: 36px; border-radius: 18px;">
-                            <source src="assets/audio/ours_psyche_english.m4a" type="audio/mp4">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 3: DARK MODE PLAYGROUND -->
-    <section id="playground" class="section-wrapper">
-        <div class="container">
-            <span class="section-eyebrow">Experience It</span>
-            <h2 class="section-headline" style="color: white;">Universal Interface.</h2>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-                <!-- INTERACTIVE DEV -->
-                <div class="glass-card"
-                    style="background: rgba(28,28,30, 0.6); border: 1px solid rgba(255,255,255,0.1);">
-                    <div style="margin-bottom: 20px;">
-                        <label
-                            style="color: #8E8E93; font-size: 13px; font-weight: 600; text-transform: uppercase;">Input
-                            (Sinhala/English)</label>
-                    </div>
-
-                    <div class="ios-input-wrapper">
-                        <input type="text" id="user-input" class="ios-input" value="මම ඔයාට ආදරෙයි"
-                            placeholder="Type something...">
-                        <button class="send-btn" onclick="runInference()">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                            </svg>
-                        </button>
-                    </div>
-
-                    <div
-                        style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                        <label
-                            style="color: #8E8E93; font-size: 13px; font-weight: 600; text-transform: uppercase;">Internal
-                            IPA Representation</label>
-                        <div id="latency-tag" style="font-size: 12px; color: var(--brand-green); display: none;">42ms
-                        </div>
-                    </div>
-
-                    <div id="token-display" class="token-stream">
-                        <!-- Tokens appear here -->
-                    </div>
-
-                    <div id="audio-out" style="margin-top: 40px; opacity: 0; transition: opacity 0.5s;">
-                        <div style="color: #8E8E93; font-size: 13px; text-align: center; margin-bottom: 10px;">
-                            GENERATING AUDIO...</div>
-                        <div class="audio-viz">
-                            <div class="bar" style="animation-duration: 0.5s"></div>
-                            <div class="bar" style="animation-duration: 0.7s"></div>
-                            <div class="bar" style="animation-duration: 0.4s"></div>
-                            <div class="bar" style="animation-duration: 0.9s"></div>
-                            <div class="bar" style="animation-duration: 0.6s"></div>
-                            <div class="bar" style="animation-duration: 0.8s"></div>
-                            <div class="bar" style="animation-duration: 0.5s"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CONTEXT -->
-                <div style="display: flex; flex-direction: column; justify-content: center;">
-                    <h3 style="font-size: 32px; color: white; margin-bottom: 16px;">It speaks Phonemes,<br>not Words.
+                <!-- Strengths -->
+                <div class="bg-white p-8 rounded-2xl border-l-4 border-green-500 shadow-sm">
+                    <h3 class="text-xl font-bold text-green-700 flex items-center gap-2 mb-6">
+                        <i data-lucide="thumbs-up"></i> Concrete Strengths
                     </h3>
-                    <p style="font-size: 18px; color: #AEAEB2; line-height: 1.6;">
-                        By converting <strong>Sinhala</strong> characters into the <strong>International Phonetic
-                            Alphabet (IPA)</strong>, PsycheTTS allows for zero-shot transfer.
-                    </p>
-                    <p style="font-size: 18px; color: #AEAEB2; line-height: 1.6; margin-top: 20px;">
-                        It doesn't need to learn "Language". It just feels the sound.
-                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Proven</span>
+                            <span class="text-slate-700 text-sm"><strong>Pipeline Viability:</strong> The "Manual
+                                Helper" tool successfully captures audio from AI Studio. We have physical .wav files
+                                with metadata.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Proven</span>
+                            <span class="text-slate-700 text-sm"><strong>Teacher Quality:</strong> Gemini 2.5 Pro (Leda
+                                voice) successfully generates "sing-song" Sinhala prosody, validating it as a
+                                teacher.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Proven</span>
+                            <span class="text-slate-700 text-sm"><strong>Infrastructure:</strong> Functional Flask Web
+                                UI for logging and dataset management is live.</span>
+                        </li>
+                    </ul>
+                </div>
 
-                    <div style="margin-top: 40px;">
-                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                            <div
-                                style="width: 32px; height: 32px; border-radius: 8px; background: var(--brand-orange); display: flex; align-items: center; justify-content: center;">
-                                ⚡</div>
-                            <div style="color: white; font-weight: 600;">Fast Inference</div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 16px;">
-                            <div
-                                style="width: 32px; height: 32px; border-radius: 8px; background: var(--brand-purple); display: flex; align-items: center; justify-content: center;">
-                                🎭</div>
-                            <div style="color: white; font-weight: 600;">Deep Emotion</div>
-                        </div>
+                <!-- Challenges / Limitations -->
+                <div class="bg-white p-8 rounded-2xl border-l-4 border-red-500 shadow-sm">
+                    <h3 class="text-xl font-bold text-red-700 flex items-center gap-2 mb-6">
+                        <i data-lucide="alert-octagon"></i> Current Limitations
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded">Critical</span>
+                            <span class="text-slate-700 text-sm"><strong>Dataset Size:</strong> We currently have < 50
+                                    samples. Emotional TTS typically requires 10-20 hours of data to generalize.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-red-100 text-red-700 text-xs font-bold px-2 py-1 rounded">Blocker</span>
+                            <span class="text-slate-700 text-sm"><strong>Rate Limits:</strong> Automated batch
+                                generation is blocked by API limits (429 Errors), enforcing manual collection which is
+                                slow.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded">Risk</span>
+                            <span class="text-slate-700 text-sm"><strong>Compute Budget:</strong> Training the Flow
+                                Matching decoder will require GPU resources we haven't yet allocated/benchmarked.</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. DATASET DEMO -->
+    <section id="dataset" class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 relative">
+            <span class="section-number">05</span>
+            <div class="flex items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-3xl font-bold pl-12">Evidence: Collected Samples</h2>
+                    <p class="pl-12 text-slate-500 mt-2">Authentic output from our curation pipeline.</p>
+                </div>
+            </div>
+
+            <div class="grid gap-4">
+                <!-- Audio Card 1 -->
+                <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
+                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-xl">😊</div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-800">Happy Sample 1</h4>
+                        <p class="text-slate-500 text-xs truncate">"මම අද ගොඩක් සතුටින්!" (I am very happy today!)</p>
                     </div>
+                    <audio controls class="h-8 w-40 md:w-64">
+                        <source src="../collector/dataset/happy_leda_1.wav" type="audio/wav">
+                    </audio>
+                </div>
+
+                <!-- Audio Card 2 -->
+                <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
+                    <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-xl">😊</div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-800">Happy Sample 2</h4>
+                        <p class="text-slate-500 text-xs truncate">"කොච්චර ලස්සන උදෑසනක්ද මේ!" (What a beautiful
+                            morning!)</p>
+                    </div>
+                    <audio controls class="h-8 w-40 md:w-64">
+                        <source src="../collector/dataset/happy_leda_2.wav" type="audio/wav">
+                    </audio>
+                </div>
+
+                <!-- Audio Card 3 -->
+                <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
+                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-xl">😢</div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-800">Sad Sample 1</h4>
+                        <p class="text-slate-500 text-xs truncate">"මට අද ගොඩක් දුකයි." (I am very sad today.)</p>
+                    </div>
+                    <audio controls class="h-8 w-40 md:w-64">
+                        <source src="../collector/dataset/sad_leda_1.wav" type="audio/wav">
+                    </audio>
+                </div>
+
+                <!-- Audio Card 4 -->
+                <div class="glass-card p-4 rounded-xl flex items-center gap-4 border border-slate-100">
+                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-xl">😢</div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-800">Sad Sample 2</h4>
+                        <p class="text-slate-500 text-xs truncate">"කවුරුත් මාව තේරුම් ගන්නේ නැහැ." (No one understands
+                            me.)</p>
+                    </div>
+                    <audio controls class="h-8 w-40 md:w-64">
+                        <source src="../collector/dataset/sad_leda_2.wav" type="audio/wav">
+                    </audio>
                 </div>
             </div>
-
         </div>
     </section>
 
-    </section>
+    <!-- 6. COLLABORATION -->
+    <section id="collaboration" class="py-20 bg-blue-600 text-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-6">Join Cortana R&D</h2>
+            <p class="text-blue-100 text-lg mb-10 max-w-2xl mx-auto">
+                We are looking for collaborators to solve the Data Scarcity and Compute challenges.
+            </p>
 
-    <!-- NEW SECTION: THE HORIZON (Future) -->
-    <section id="horizon" class="section-wrapper"
-        style="background: linear-gradient(180deg, #000 0%, #1c1c1e 100%); color: white; padding-bottom: 160px;">
-        <div class="container">
-            <span class="section-eyebrow">The Trajectory</span>
-            <h2 class="section-headline" style="color: white; margin-bottom: 80px;">Beyond Speech.</h2>
-
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
-
-                <!-- Future 1 -->
-                <div style="text-align: center;">
-                    <div
-                        style="width: 60px; height: 60px; margin: 0 auto 20px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                        🧬</div>
-                    <h3 style="font-size: 20px; margin-bottom: 10px;">Neural Voice Cloning</h3>
-                    <p style="color: #8E8E93; font-size: 15px; line-height: 1.5;">
-                        From 3 seconds of audio, cloning a user's voice <strong>and</strong> their emotional baseline.
-                        Your digital twin, speaking languages you don't know.
+            <div class="grid md:grid-cols-2 gap-6 text-left">
+                <a href="../collector/README.md"
+                    class="group bg-white/10 hover:bg-white/20 p-6 rounded-2xl transition border border-white/20">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
+                        Help Collect Data <i data-lucide="arrow-right"
+                            class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </h3>
+                    <p class="text-sm text-blue-100">We need 1000+ samples. Setup the local helper and start generating.
                     </p>
-                </div>
+                </a>
 
-                <!-- Future 2 -->
-                <div style="text-align: center;">
-                    <div
-                        style="width: 60px; height: 60px; margin: 0 auto 20px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                        🌐</div>
-                    <h3 style="font-size: 20px; margin-bottom: 10px;">Emotion Transfer</h3>
-                    <p style="color: #8E8E93; font-size: 15px; line-height: 1.5;">
-                        Speaking English with a "Sinhala" cadence, or French with a "Japanese" emotional map. Preserving
-                        cultural subtext across language barriers.
-                    </p>
-                </div>
-
-                <!-- Future 3 -->
-                <div style="text-align: center;">
-                    <div
-                        style="width: 60px; height: 60px; margin: 0 auto 20px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">
-                        ⚡</div>
-                    <h3 style="font-size: 20px; margin-bottom: 10px;">Speech-to-Speech</h3>
-                    <p style="color: #8E8E93; font-size: 15px; line-height: 1.5;">
-                        Deleting the text bottleneck entirely. End-to-end audio processing for < 100ms conversational
-                            latency. True real-time translation. </p>
-                </div>
+                <a href="../research/train.py"
+                    class="group bg-white/10 hover:bg-white/20 p-6 rounded-2xl transition border border-white/20">
+                    <h3 class="text-xl font-bold mb-2 flex items-center gap-2">
+                        Optimize Architecture <i data-lucide="arrow-right"
+                            class="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </h3>
+                    <p class="text-sm text-blue-100">Help us benchmark Mamba vs Transformer for Sinhala phonetics.</p>
+                </a>
             </div>
-
-            <div style="margin-top: 100px; text-align: center;">
-                <a href="#"
-                    style="display: inline-block; padding: 16px 32px; background: white; color: black; border-radius: 40px; font-weight: 600; text-decoration: none; transition: transform 0.2s;">Read
-                    the Whitepaper ↗</a>
-            </div>
-
         </div>
     </section>
 
-    <footer
-        style="background: black; padding: 60px 0; text-align: center; color: #48484A; font-size: 13px; border-top: 1px solid #1C1C1E; margin-top: -1px;">
-        <p>PsycheTTS v2 Research Preview.</p>
-        <p style="margin-top: 10px;">&copy; 2025 Deepmind Advanced Agentic Coding Team.</p>
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 py-12 text-slate-500 text-sm">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="mb-2">&copy; 2025 Cortana Research and Development Team.</p>
+        </div>
     </footer>
 
     <script>
-        // --- Interactions ---
-
-        // 1. Scroll Active State
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.getAttribute('id');
-                    document.querySelectorAll('.nav-item').forEach(a => {
-                        a.classList.toggle('active', a.getAttribute('href') === '#' + id);
-                    });
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('section').forEach(s => observer.observe(s));
-
-        // 2. Inference Simulation
-        function runInference() {
-            const input = document.getElementById('user-input').value;
-            const tokenContainer = document.getElementById('token-display');
-            const audioOut = document.getElementById('audio-out');
-
-            // Reset
-            tokenContainer.innerHTML = '';
-            audioOut.style.opacity = '0';
-
-            // Generate visual tokens
-            const map = {
-                'ම': 'mə', 'ම': 'mə', ' ': ' ', 'ඔ': 'o', 'යා': 'jaː', 'ට': 'ʈə', 'ආ': 'aː', 'ද': 'də', 'ර': 're', 'යි': 'ji'
-            };
-
-            // Mock tokenizer
-            let tokens = [];
-            if (input.match(/[a-z]/i)) {
-                tokens = input.split(' ').map(w => w + "ː"); // English mock
-            } else {
-                // Sinhala Mock split
-                tokens = ["mə", "mə", " ", "o", "jaː", "ʈə", " ", "aː", "də", "re", "ji"];
-            }
-
-            // Stream tokens
-            let delay = 0;
-            tokens.forEach(t => {
-                if (t.trim() === '') return;
-                const span = document.createElement('div');
-                span.className = 'token';
-                span.innerText = t;
-                span.style.animationDelay = delay + 's';
-                tokenContainer.appendChild(span);
-                delay += 0.05;
-            });
-
-            // Show Audio
-            setTimeout(() => {
-                audioOut.style.opacity = '1';
-                document.getElementById('latency-tag').style.display = 'block';
-            }, delay * 1000 + 300);
-        }
-
-        // Initial run
-        setTimeout(runInference, 1000);
-
+        lucide.createIcons();
     </script>
 </body>
 
