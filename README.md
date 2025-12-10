@@ -1,67 +1,97 @@
-# PsycheTTS: Emotional Text-to-Speech Research Platform
+# <div align="center">PsycheTTS: Emotional Text-to-Speech Platform</div>
 
-**PsycheTTS** is a comprehensive research project contributed to the **University of Sri Jayewardenepura**. It focuses on developing emotionally expressive Text-to-Speech models for Sinhala, utilizing advanced techniques like the Gemini 2.5 Pro TTS API for data collection and custom neural architectures for training.
+<div align="center">
+  <h3>University of Sri Jayewardenepura Research Contribution</h3>
+  <p>
+    An advanced research initiative focused on developing high-fidelity, emotionally expressive Text-to-Speech models for low-resource languages (Sinhala).
+  </p>
+  
+  [![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)](https://github.com/Cortana-Devs/PsycheTTS-V2)
+  [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+  [![Python](https://img.shields.io/badge/Python-3.10+-yellow?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+  [![Framework](https://img.shields.io/badge/Framework-PyTorch-orange?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
 
-## Project Structure
+  [View Research Portal](./research/psyche_tts_portal.html) • [Data Collector](./collector/README.md)
+</div>
 
-This repository is organized into two main modules:
+---
 
-### 1. `collector`
-Tools for generating and curating high-quality emotional/neutral audio datasets using Google's Gemini API.
+## 🚀 Project Overview
 
--   **`src/web/`**: A Flask-based web interface for:
-    -   **Manual Helper Mode**: Streamlines the copy-paste workflow for AI Studio generation.
-    -   **CSV Logging**: Automatically logs generated files to `dataset/metadata.csv`.
-    -   **Dataset Explorer**: Review collected samples.
--   **`src/cli/`**: A Python CLI for batch generation (subject to API rate limits).
--   **`dataset/`**: The central repository for all collected `.wav` files and `metadata.csv`.
+**PsycheTTS** combines the power of Large Language Models (Gemini 2.5 Pro) with efficient neural architectures (Bi-Directional Mamba) to solve the data scarcity problem in Sinhala TTS.
 
-### 2. `research`
-The core research codebase for training and experimenting with emotional TTS models.
+### Key Components
 
--   **`train.py`**: Main training loop.
--   **`model.py`**: Neural network definitions (PsycheTTS architecture).
--   **`modules.py`**: Reusable blocks (Mamba, Style Encoders).
--   **`data_loader.py`**: Custom PyTorch dataset loaders.
--   **`psyche_tts_portal.html`**: Interactive research portal for visualizing results.
+| Module | Description | Status |
+| :--- | :--- | :--- |
+| **Collector** | A Flask-based tool to generate & curate emotional audio samples using Gemini API. Features a **Manual Helper** for precise control. | ✅ **Verified Working** |
+| **Research** | The core training pipeline implementing the **PsycheTTS Architecture** (Style Encoder + Mamba + Flow Matching). | 🚧 **In Development** |
+| **Portal** | Interactive HTML dashboard for visualizing architecture, pipelines, and results. | ✨ **Live** |
 
-## Quick Start
+---
 
-### Setting up the Collector
+## 📂 Directory Structure
 
-1.  Navigate to `collector`:
-    ```bash
-    cd collector
-    ```
-2.  Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-3.  Run the Web Helper:
-    ```bash
-    python src/web/server.py
-    ```
-4.  Open `http://localhost:8000/manual` to start collecting data.
+```plaintext
+PsycheTTS/
+├── collector/          # Data Collection Suite
+│   ├── dataset/        # Validated Audio Samples (.wav) & Metadata (.csv)
+│   ├── src/web/        # Web Interface (Flask)
+│   └── src/cli/        # Command Line Tools
+│
+├── research/           # Model Training & Experiments
+│   ├── psyche_tts_portal.html  # Visualization Dashboard
+│   ├── train.py        # Main Training Loop
+│   ├── model.py        # Architecture Definitions
+│   └── modules.py      # Core Building Blocks (Mamba, etc.)
+```
 
-### Setting up Research
+---
 
-1.  Navigate to `research`:
-    ```bash
-    cd research
-    ```
-2.  Install dependencies (PyTorch, etc.):
-    ```bash
-    pip install -r requirements.txt
-    ```
-3.  Start training:
-    ```bash
-    python train.py
-    ```
+## ⚡ Quick Start
 
-## Collaboration Guidelines
+### 1. Data Collector (Start Here)
+Generate your own emotional dataset using our specialized tool.
 
--   **Dataset**: All new audio samples must be placed in `collector/dataset/` and logged in `collector/dataset/metadata.csv`.
--   **Modeling**: New model architectures should be added to `research/modules.py` and imported in `research/model.py`.
+```bash
+# 1. Navigate to collector directory
+cd collector
 
-## License
-MIT
+# 2. Install dependencies (First time only)
+pip install -r requirements.txt
+
+# 3. Launch the Server
+python src/web/server.py
+```
+
+> **Note:** The server will start at `http://127.0.0.1:8000/manual`.
+> Ensure you have your `GEMINI_API_KEY` ready if using automated features.
+
+### 2. Research & Training
+Train the model on the collected data.
+
+```bash
+# 1. Navigate to research directory
+cd research
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Start Training
+python train.py
+```
+
+---
+
+## 🤝 Collaboration
+
+This project is open for collaboration, specifically targeting researchers from the **University of Sri Jayewardenepura**.
+
+*   **Dataset Contributions:** Please ensure all new samples are logged in `collector/dataset/metadata.csv`.
+*   **Model Improvements:** Submit PRs for new modules in `research/modules.py`.
+
+---
+
+<div align="center">
+  <sub>&copy; 2025 University of Sri Jayewardenepura & Cortana R&D Contribution. All Rights Reserved.</sub>
+</div>
