@@ -605,9 +605,138 @@
             neutral: '#94a3b8'  // Slate
         };
 
+        // Detailed Node Explanations
+        const nodeDetails = {
+            'Sinhala Text': {
+                logic: "The raw input sentence provided by the user or system.",
+                expert: "Serves as the linguistic linguistic condition for the model.",
+                alt: "Semantic Vectors",
+                tradeoff: "Text is ambiguous on intonation; requires context to interpret.",
+                conclusion: "Primary content driver."
+            },
+            'Ref Audio\n(Emotion)': {
+                logic: "A short audio clip (3-5s) demonstrating the desired emotion (e.g., 'Sad').",
+                expert: "We extract prosody (pitch, rhythm, timbre) independently of the text content.",
+                alt: "One-Hot Speaker ID",
+                tradeoff: "Computation-heavy to encode but offers infinite, zero-shot styling capability.",
+                conclusion: "Enables 'Voice Cloning'."
+            },
+            'IPA Phonemizer': {
+                logic: "Converts characters (A, B) into sound symbols (Phonemes).",
+                expert: "Normalizes 'Spoken' vs 'Written' differences. Critical for Diglossic languages like Sinhala.",
+                alt: "ByT5 Embeddings",
+                tradeoff: "Requires complex rules, but effectively eliminates pronunciation errors.",
+                conclusion: "Ensures intelligibility."
+            },
+            'Style Encoder\n(GST/VAE)': {
+                logic: "Compresses Ref Audio into a 'Style Vector'.",
+                expert: "Global Style Tokens (GST) learn independent 'style embeddings' to represent emotion.",
+                alt: "x-vectors (Verification)",
+                tradeoff: "Harder to train than simple labels, but generalizes to unseen emotions.",
+                conclusion: "Mathematical emotion understanding."
+            },
+            'Fusion': {
+                logic: "Combines Text (Content) and Style (Emotion).",
+                expert: "Often uses concatenation or Cross-Attention mechanisms.",
+                alt: "Adaptive Instance Norm",
+                tradeoff: "Simple concat is fast but might lose fine-grained control.",
+                conclusion: "Merges 'What' with 'How'."
+            },
+            'Bi-Directional\nMamba Block': {
+                logic: "The 'Brain'. Predicts duration and pitch from context.",
+                expert: "State Space Model (SSM) with O(N) linear time complexity (vs Transformer O(N²)).",
+                alt: "Transformers (GPT)",
+                tradeoff: "Less community maturity than Transformers, but significantly faster.",
+                conclusion: "Secret weapon for <100ms latency."
+            },
+            'Flow Matching\nDecoder': {
+                logic: "Iteratively sculpts noise into a Spectrogram.",
+                expert: "Uses Optimal Transport to find the 'straightest path' from noise to data.",
+                alt: "Diffusion (DDPM), GANs",
+                tradeoff: "Slower than GANs, but vastly higher stability and mode coverage.",
+                conclusion: "SOTA balance: Speed vs Quality."
+            },
+            'ODE Solver': {
+                logic: "Steps through the Flow generation process.",
+                expert: "Solves the probability differential equation defined by the model.",
+                alt: "SDE Solvers",
+                tradeoff: "More steps = high quality but high latency.",
+                conclusion: "Controls 'Rendering Quality'."
+            },
+            'Mel Spectrogram': {
+                logic: "Visual representation of audio frequencies.",
+                expert: "Log-frequency scale matches human ear perception.",
+                alt: "Linear Spectrogram",
+                tradeoff: "Lossy (no phase info) but easier to model than raw waves.",
+                conclusion: "Standard audio feature."
+            },
+            'HiFi-GAN\nVocoder': {
+                logic: "Converts Spectrogram -> Raw Audio Waveform.",
+                expert: "Specialized GAN hallucinating missing phase information.",
+                alt: "WaveGlow, Griffin-Lim",
+                tradeoff: "Compute heavy, but indistinguishable from human speech.",
+                conclusion: "Makes it sound 'Human'."
+            },
+            'Final Audio': {
+                logic: "The generated .wav file.",
+                expert: "24kHz Sampling Rate.",
+                alt: "MP3, FLAC",
+                tradeoff: "Uncompressed = large size.",
+                conclusion: "The Result."
+            }
+        };
+
         const archOption = {
             tooltip: {
-                formatter: '{b}'
+                trigger: 'item',
+                enterable: true,
+                padding: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderColor: '#e2e8f0',
+                textStyle: { color: '#1e293b' },
+                renderMode: 'html',
+                formatter: function (params) {
+                    if (params.dataType !== 'node') return null;
+
+                    const name = params.name;
+                    const cleanName = name.replace('\n', ' ');
+                    const info = nodeDetails[name];
+
+                    if (!info) return `<div class="p-2 font-bold">${cleanName}</div>`;
+
+                    return `
+                        <div class="max-w-xs p-4 rounded-lg shadow-xl border border-slate-100 font-sans text-left z-50">
+                            <h3 class="font-bold text-lg text-slate-800 mb-2 border-b border-slate-200 pb-1">${cleanName}</h3>
+                            
+                            <div class="space-y-3 text-sm">
+                                <div>
+                                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-wide">Logic</span>
+                                    <p class="text-slate-600 leading-snug text-xs">${info.logic}</p>
+                                </div>
+                                
+                                <div>
+                                    <span class="text-[10px] font-bold text-purple-600 uppercase tracking-wide">Expert Insight</span>
+                                    <p class="text-slate-600 leading-snug italic text-xs">"${info.expert}"</p>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="bg-red-50 p-2 rounded border border-red-100">
+                                        <span class="text-[9px] font-bold text-red-600 uppercase">Tradeoff</span>
+                                        <p class="text-[10px] text-red-800 leading-tight mt-1">${info.tradeoff}</p>
+                                    </div>
+                                    <div class="bg-green-50 p-2 rounded border border-green-100">
+                                        <span class="text-[9px] font-bold text-green-600 uppercase">Benefit</span>
+                                        <p class="text-[10px] text-green-800 leading-tight mt-1">${info.conclusion}</p>
+                                    </div>
+                                </div>
+                                
+                                 <div class="pt-2 border-t border-slate-100">
+                                    <span class="text-[9px] text-slate-400 font-mono">Alternative: ${info.alt}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
             },
             animationDurationUpdate: 1500,
             animationEasingUpdate: 'quinticInOut',
