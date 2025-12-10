@@ -94,29 +94,36 @@
 <body class="bg-slate-50 relative">
 
     <!-- NAVIGATION -->
-    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="brain-circuit" class="text-blue-600 w-8 h-8"></i>
-                    <span class="font-bold text-lg tracking-tight">PsycheTTS <span class="text-blue-600">Cortana
-                            R&D</span></span>
-                </div>
-                <div class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
-                    <a href="#context" class="hover:text-blue-600 transition">Context</a>
-                    <a href="#pipeline" class="hover:text-blue-600 transition">Pipeline</a>
-                    <a href="#blueprints" class="hover:text-blue-600 transition">Blueprints</a>
-                    <a href="#architecture" class="hover:text-blue-600 transition">Architecture</a>
-                    <a href="#status" class="hover:text-blue-600 transition">Reality Check</a>
-                    <a href="#dataset" class="hover:text-blue-600 transition">Dataset</a>
-                    <a href="#collaboration" class="hover:text-blue-600 transition">Collaborate</a>
-                </div>
-                <a href="https://github.com/your-repo/PsycheTTS" target="_blank"
-                    class="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:scale-105 transition transform">
-                    GitHub Repo
-                </a>
-            </div>
-        </div>
+    <!-- TOP RIGHT ACTIONS -->
+    <div class="fixed top-6 right-6 z-50 flex gap-4">
+        <a href="https://github.com/Cortana-Devs/PsycheTTS-V2" target="_blank"
+            class="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-slate-200 text-slate-700 px-4 py-2 rounded-full text-sm font-semibold hover:scale-105 transition shadow-sm hover:shadow-md">
+            <i data-lucide="github" class="w-4 h-4"></i> Cortana-Devs
+        </a>
+    </div>
+
+    <!-- BOTTOM DOCK NAV -->
+    <nav
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 backdrop-blur-xl border border-white/10 px-6 py-3 rounded-full shadow-2xl flex items-center gap-6">
+        <a href="#context"
+            class="nav-item text-slate-400 hover:text-white transition text-xs font-semibold uppercase tracking-wider">Context</a>
+        <div class="w-px h-3 bg-white/20"></div>
+        <a href="#pipeline"
+            class="nav-item text-slate-400 hover:text-white transition text-xs font-semibold uppercase tracking-wider">Pipeline</a>
+        <div class="w-px h-3 bg-white/20"></div>
+        <a href="#blueprints"
+            class="nav-item text-slate-400 hover:text-white transition text-xs font-semibold uppercase tracking-wider">Blueprints</a>
+        <div class="w-px h-3 bg-white/20"></div>
+        <a href="#architecture"
+            class="nav-item text-slate-400 hover:text-white transition text-xs font-semibold uppercase tracking-wider">Arch</a>
+        <div class="w-px h-3 bg-white/20"></div>
+        <a href="#status"
+            class="nav-item text-slate-400 hover:text-white transition text-xs font-semibold uppercase tracking-wider">Status</a>
+        <div class="w-px h-3 bg-white/20"></div>
+        <a href="#dataset"
+            class="nav-item text-blue-400 hover:text-blue-300 transition text-xs font-bold uppercase tracking-wider flex items-center gap-1">
+            <i data-lucide="play-circle" class="w-3 h-3"></i> Demos
+        </a>
     </nav>
 
     <!-- HERO -->
@@ -629,7 +636,32 @@
             container.parentElement.style.cursor = 'grab';
         });
 
-        // Tabs
+        // Active State for Bottom Dock
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    document.querySelectorAll('.nav-item').forEach(link => {
+                        link.classList.remove('text-white', 'scale-110');
+                        link.classList.add('text-slate-400');
+                        if (link.getAttribute('href') === '#' + id) {
+                            link.classList.remove('text-slate-400');
+                            link.classList.add('text-white', 'scale-110');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
         function switchTab(tab) {
             const arch = document.getElementById('arch-diagram');
             const pipe = document.getElementById('pipe-diagram');
