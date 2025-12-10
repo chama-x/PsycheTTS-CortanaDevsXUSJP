@@ -1,0 +1,62 @@
+[
+    {
+        "text": "මම අද ගොඩක් සතුටින්!",
+        "emotion": "Happy",
+        "voice": "Leda",
+        "instructions": "Bright, uplifting, high energy, smiling tone."
+    },
+    {
+        "text": "කොච්චර ලස්සන උදෑසනක්ද මේ!",
+        "emotion": "Happy",
+        "voice": "Leda",
+        "instructions": "Warm, welcoming, joyful."
+    },
+    {
+        "text": "මට අලුත් තෑග්ගක් ලැබුනා, හරිම සතුටුයි.",
+        "emotion": "Happy",
+        "voice": "Leda",
+        "instructions": "Excited, fast tempo, cheerful."
+    },
+    {
+        "text": "හැමදේම හරිම ලස්සනට සිද්ධ වෙනවා.",
+        "emotion": "Happy",
+        "voice": "Leda",
+        "instructions": "Satisfied, content, pleasant."
+    },
+    {
+        "text": "අපි හැමෝම එකතු වෙලා සතුටු වෙමු!",
+        "emotion": "Happy",
+        "voice": "Leda",
+        "instructions": "Enthusiastic, celebratory, loud."
+    },
+    {
+        "text": "මට ගොඩක් පාළුයි අද.",
+        "emotion": "Sad",
+        "voice": "Leda",
+        "instructions": "Slow, quiet, breathy, melancholic."
+    },
+    {
+        "text": "ඇයි මට මෙහෙම වුනේ කියලා හිතාගන්න බැහැ.",
+        "emotion": "Sad",
+        "voice": "Leda",
+        "instructions": "Distressed, tearful, shaky voice."
+    },
+    {
+        "text": "මේක හරිම අඳුරු දවසක්.",
+        "emotion": "Sad",
+        "voice": "Leda",
+        "instructions": "Low pitch, hopeless, gloomy."
+    },
+    {
+        "text": "මම අතරමං වෙලා වගේ දැනෙනවා.",
+        "emotion": "Sad",
+        "voice": "Leda",
+        "instructions": "Anxious sadness, soft, whispery."
+    },
+    {
+        "text": "කවුරුත් මාව තේරුම් ගන්නේ නැහැ.",
+        "emotion": "Sad",
+        "voice": "Leda",
+        "instructions": "Lonely, isolated, heavy sighs."
+    }
+]

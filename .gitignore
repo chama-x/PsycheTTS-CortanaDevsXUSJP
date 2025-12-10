@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.DS_Store
+.env
+collector/dataset/*.wav
+collector/dataset/*.mp3
+research/assets/audio/

@@ -742,8 +742,8 @@
                         style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
                         <h4 style="margin: 0;">Sinhala Zero-Shot</h4>
                         <span
-                            style="font-size: 12px; font-weight: 600; background: #F2F2F7; padding: 4px 8px; border-radius: 6px; color: var(--fg-secondary);">Tone:
-                            Warm & Friendly</span>
+                            style="font-size: 12px; font-weight: 600; background: #F2F2F7; padding: 4px 8px; border-radius: 6px; color: var(--fg-secondary);">Emotion:
+                            Melancholy</span>
                     </div>
                     <p style="font-style: italic; color: var(--fg-secondary); margin-bottom: 30px; font-size: 15px;">"මට
                         ගෙදර යන්න ඕනෙ... මට මහන්සියි." (I want to go home... I'm tired.)</p>
@@ -754,7 +754,7 @@
                             style="font-size: 11px; font-weight: 700; color: #8E8E93; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
                             Gemini 2.5 Pro (Reference)</div>
                         <audio controls style="width: 100%; height: 36px; border-radius: 18px;">
-                            <source src="assets/audio/ref_gemini_sinhala.wav" type="audio/wav">
+                            <source src="assets/audio/ref_gemini_sinhala.m4a" type="audio/mp4">
                             Your browser does not support the audio element.
                         </audio>
                     </div>
@@ -807,118 +807,6 @@
                 </div>
 
             </div>
-        </div>
-        <!-- Verdict / Analysis -->
-        <div class="glass-card"
-            style="margin-top: 40px; background: rgba(255, 59, 48, 0.05); border: 1px solid rgba(255, 59, 48, 0.1);">
-            <h4 style="color: #FF3B30; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
-                <span>🔎</span> Audio Forensics: Why Gemini Sounds "Authentic"
-            </h4>
-
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 40px;">
-                <!-- Chart -->
-                <div>
-                    <img src="assets/analysis_chart.png"
-                        style="width: 100%; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 20px;">
-                    <p style="font-size: 13px; color: var(--fg-secondary); text-align: center;">
-                        <i>Fig 1. Spectrogram & Pitch Contour analysis showing Gemini's superior dynamic range.</i>
-                    </p>
-                </div>
-
-                <!-- Metrics -->
-                <div style="font-size: 13px;">
-                    <div style="margin-bottom: 20px;">
-                        <strong style="display: block; margin-bottom: 8px;">Intonation (Pitch Variance)</strong>
-                        <div
-                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                            <span style="color: var(--fg-secondary);">Gemini</span>
-                            <strong>30.57 Hz</strong>
-                        </div>
-                        <div style="width: 100%; height: 4px; background: #E5E5EA; border-radius: 2px;">
-                            <div style="width: 100%; height: 100%; background: #007AFF; border-radius: 2px;"></div>
-                        </div>
-
-                        <div
-                            style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px; margin-bottom: 4px;">
-                            <span style="color: var(--fg-secondary);">PsycheTTS</span>
-                            <strong>22.07 Hz</strong>
-                        </div>
-                        <div style="width: 100%; height: 4px; background: #E5E5EA; border-radius: 2px;">
-                            <div style="width: 72%; height: 100%; background: var(--brand-orange); border-radius: 2px;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="margin-bottom: 20px;">
-                        <strong style="display: block; margin-bottom: 8px;">Dynamic Range</strong>
-                        <div
-                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                            <span style="color: var(--fg-secondary);">Gemini</span>
-                            <strong>150 Hz</strong>
-                        </div>
-                        <div style="width: 100%; height: 4px; background: #E5E5EA; border-radius: 2px;">
-                            <div style="width: 100%; height: 100%; background: #007AFF; border-radius: 2px;"></div>
-                        </div>
-
-                        <div
-                            style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px; margin-bottom: 4px;">
-                            <span style="color: var(--fg-secondary);">PsycheTTS</span>
-                            <strong>90 Hz</strong>
-                        </div>
-                        <div style="width: 100%; height: 4px; background: #E5E5EA; border-radius: 2px;">
-                            <div style="width: 60%; height: 100%; background: var(--brand-orange); border-radius: 2px;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div
-                        style="padding: 15px; background: white; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05);">
-                        <strong style="color: var(--fg-primary);">Conclusion</strong>
-                        <p style="color: var(--fg-secondary); margin-top: 5px; line-height: 1.5;">
-                            Gemini wins on <strong>Expression</strong>. Its ability to vary pitch (30Hz std) creates the
-                            "Warmth" you hear. PsycheTTS is flatter. <br><br>
-                            <strong>Action</strong>: Implement <i>Cross-Attentive Bi-Mamba</i> to inject style tokens
-                            and boost dynamic range.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-        <!-- Verdict / Analysis -->
-        <div class="glass-card"
-            style="margin-top: 40px; background: rgba(255, 59, 48, 0.05); border: 1px solid rgba(255, 59, 48, 0.1);">
-            <h4 style="color: #FF3B30; margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
-                <span>⚠️</span> Fair Comparison Analysis
-            </h4>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; font-size: 14px; line-height: 1.6;">
-                <div>
-                    <strong style="color: var(--fg-primary);">Gemini 2.5 Pro (The Winner on Nuance)</strong>
-                    <p style="color: var(--fg-secondary); margin-top: 5px;">
-                        Successfully follows complex, contradictory instructions (e.g., "Speak 'I'm tired' with a Warm
-                        tone").
-                        It decouples semantics from acoustics using massive AudioLM context.
-                        <br><br>
-                        <span
-                            style="font-size: 12px; font-weight: 600; padding: 2px 6px; background: #E5E5EA; border-radius: 4px;">Latency:
-                            ~800ms</span>
-                    </p>
-                </div>
-                <div>
-                    <strong style="color: var(--brand-orange);">PsycheTTS v2 (The Winner on Speed)</strong>
-                    <p style="color: var(--fg-secondary); margin-top: 5px;">
-                        Matches the <strong>audio fidelity</strong> but struggles with "Contradictory Instructions".
-                        Without the proposed <i>Style-BERT Bridge</i>, it tends to follow the text's natural sentiment
-                        (Melancholy) rather than the prompt.
-                        <br><br>
-                        <span
-                            style="font-size: 12px; font-weight: 600; padding: 2px 6px; background: rgba(255, 159, 10, 0.1); color: var(--brand-orange); border-radius: 4px;">Latency:
-                            45ms</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-
         </div>
     </section>
 

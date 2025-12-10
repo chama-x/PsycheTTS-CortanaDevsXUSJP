@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Audio Collector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-input {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        .glass-input:focus {
+            border-color: #38bdf8;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        /* Gradient Animation */
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+            transition: opacity 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: rgba(51, 65, 85, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(71, 85, 105, 0.8);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        .tab-btn.active {
+            border-bottom: 2px solid #38bdf8;
+            color: #38bdf8;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen flex items-center justify-center p-6 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]">
+
+    <div class="max-w-6xl w-full">
+
+        <!-- Header / Intro -->
+        <div class="text-center mb-8">
+            <h1 class="text-5xl font-bold mb-2 tracking-tight gradient-text">Gemini Audio Collector</h1>
+            <p class="text-slate-400 text-lg">Generate high-fidelity audio samples for fine-tuning</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex justify-center mb-6 gap-8 text-lg font-medium">
+            <button id="tabGenerate"
+                class="tab-btn active pb-2 text-slate-300 hover:text-white transition-colors">Generator</button>
+            <button id="tabExplorer" class="tab-btn pb-2 text-slate-300 hover:text-white transition-colors">Dataset
+                Explorer</button>
+        </div>
+
+        <!-- GENERATOR VIEW -->
+        <div id="viewGenerate" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Left Column: Configuration -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="glass-panel rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none">
+                    </div>
+
+                    <h2 class="text-2xl font-semibold mb-6 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-cyan-400">
+                            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                            <line x1="12" x2="12" y1="19" y2="22" />
+                            <line x1="8" x2="16" y1="22" y2="22" />
+                        </svg>
+                        Configuration
+                    </h2>
+
+                    <!-- Voice Selection -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-slate-400 text-sm font-medium mb-2">Voice Model</label>
+                            <select id="voiceImg"
+                                class="glass-input w-full rounded-xl px-4 py-3 appearance-none cursor-pointer">
+                                <option value="Leda">Leda (Female)</option>
+                                <option value="Orus">Orus (Male)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-400 text-sm font-medium mb-2">Emotion / Tone</label>
+                            <select id="emotion"
+                                class="glass-input w-full rounded-xl px-4 py-3 appearance-none cursor-pointer">
+                                <option value="Happy">Happy</option>
+                                <option value="Sad">Sad</option>
+                                <option value="Neutral">Neutral</option>
+                                <option value="Angry">Angry</option>
+                                <option value="Excited">Excited</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- System Instructions -->
+                    <div class="mb-6">
+                        <label class="block text-slate-400 text-sm font-medium mb-2">System Instructions</label>
+                        <textarea id="systemInstructions" rows="3"
+                            class="glass-input w-full rounded-xl px-4 py-3 text-sm"
+                            placeholder="e.g. Speak in a soft, whispering tone. Emphasize the sorrow in the vowels."></textarea>
+                        <p class="text-xs text-slate-500 mt-2">These instructions will guide the model's prosody and
+                            emotional expression.</p>
+                    </div>
+
+                    <!-- Text Input -->
+                    <div class="mb-4">
+                        <label class="block text-slate-400 text-sm font-medium mb-2">Input Text
+                            (Sinhala/English)</label>
+                        <textarea id="inputText" rows="5"
+                            class="glass-input w-full rounded-xl px-4 py-3 text-lg leading-relaxed"
+                            placeholder="Type here... (e.g. මම අද ගොඩක් සතුටින් ඉන්නේ)"></textarea>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button id="generateBtn"
+                            class="btn-primary text-white font-semibold py-3 px-8 rounded-xl shadow-lg shadow-indigo-500/20 flex items-center gap-2 transform active:scale-95 transition-all">
+                            <span id="genBtnText">Generate Audio</span>
+                            <svg id="genBtnIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="5 3 19 12 5 21 5 3" />
+                            </svg>
+
+                            <!-- Spinner (Hidden by default) -->
+                            <svg id="genBtnSpinner" class="animate-spin h-5 w-5 text-white hidden"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Results & History -->
+            <div class="lg:col-span-5 space-y-6">
+
+                <!-- Current Output -->
+                <div
+                    class="glass-panel rounded-2xl p-8 shadow-2xl relative min-h-[300px] flex flex-col justify-center items-center text-center">
+                    <div
+                        class="absolute top-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl -ml-16 -mt-16 pointer-events-none">
+                    </div>
+
+                    <h2
+                        class="text-xl font-semibold mb-6 w-full text-left flex items-center gap-2 absolute top-8 left-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-indigo-400">
+                            <path d="M12 20h9" />
+                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                        </svg>
+                        Output Preview
+                    </h2>
+
+                    <div id="emptyState" class="flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-slate-800/50 flex items-center justify-center mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="text-slate-600">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <line x1="12" x2="12" y1="19" y2="22" />
+                                <line x1="8" x2="16" y1="22" y2="22" />
+                            </svg>
+                        </div>
+                        <p class="text-slate-500">No audio generated yet.</p>
+                    </div>
+
+                    <div id="resultState" class="w-full hidden mt-8">
+                        <div class="bg-slate-900/50 rounded-xl p-4 mb-6 border border-slate-700/50">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider text-cyan-400"
+                                    id="resultLabel">Leda • Happy</span>
+                                <span class="text-xs text-slate-500" id="resultTime">00:00</span>
+                            </div>
+                            <audio id="audioPlayer" controls
+                                class="w-full h-10 rounded-lg opacity-90 hover:opacity-100 transition-opacity"
+                                style="filter: sepia(20%) hue-rotate(180deg) saturate(200%);">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+
+                        <button id="saveBtn"
+                            class="w-full btn-secondary text-white font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-2 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                <polyline points="17 21 17 13 7 13 7 21" />
+                                <polyline points="7 3 7 8 15 8" />
+                            </svg>
+                            Save to Kaggle Dataset
+                        </button>
+                        <div id="saveStatus" class="h-6 text-sm text-center"></div>
+                    </div>
+                </div>
+
+                <!-- Mini Tip -->
+                <div class="glass-panel rounded-xl p-6 border-l-4 border-l-emerald-500">
+                    <h3 class="text-emerald-400 font-medium mb-1 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" x2="12" y1="8" y2="12" />
+                            <line x1="12" x2="12.01" y1="16" y2="16" />
+                        </svg>
+                        Pro Tip
+                    </h3>
+                    <p class="text-slate-400 text-sm">For Sinhala tuning, include keywords like "compassionate",
+                        "sorrowful", or "joyful" in system instructions to help the model pick the right prosody.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- EXPLORER VIEW -->
+        <div id="viewExplorer" class="hidden">
+            <div class="glass-panel rounded-2xl p-8 shadow-2xl relative">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="text-indigo-400">
+                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+                        </svg>
+                        Dataset Explorer
+                    </h2>
+                    <button id="refreshExplorer"
+                        class="btn-secondary px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                            <path d="M3 3v5h5" />
+                            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                            <path d="M16 21h5v-5" />
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+
+                <div id="explorerGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Items injected here -->
+                </div>
+
+                <div id="explorerLoading" class="hidden text-center py-12 text-slate-500">
+                    Loading dataset...
+                </div>
+
+                <div id="explorerEmpty" class="hidden text-center py-12 text-slate-500">
+                    No recordings found in `kaggle_dataset`. Run `python cli.py` to generate some!
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TEMPLATE FOR EXPLORER ITEM -->
+    <template id="explorerItemTemplate">
+        <div
+            class="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50 hover:border-slate-500/50 transition-colors">
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <span
+                        class="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-indigo-500/20 text-indigo-300 mb-1 voice-badge">Leda</span>
+                    <span
+                        class="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-rose-500/20 text-rose-300 mb-1 emotion-badge">Happy</span>
+                </div>
+                <span class="text-xs text-slate-500 timestamp-text">12m ago</span>
+            </div>
+            <p class="text-sm text-slate-300 mb-3 line-clamp-2 text-preview" style="min-height: 2.5em;">Wait text
+                here...</p>
+            <audio controls class="w-full h-8 rounded opacity-80" style="filter: invert(100%);">
+                Your browser does not support audio
+            </audio>
+        </div>
+    </template>
+
+    <script>
+        // TABS
+        const tabGenerate = document.getElementById('tabGenerate');
+        const tabExplorer = document.getElementById('tabExplorer');
+        const viewGenerate = document.getElementById('viewGenerate');
+        const viewExplorer = document.getElementById('viewExplorer');
+
+        function switchTab(tab) {
+            if (tab === 'generate') {
+                tabGenerate.classList.add('active');
+                tabExplorer.classList.remove('active');
+                viewGenerate.classList.remove('hidden');
+                viewExplorer.classList.add('hidden');
+            } else {
+                tabGenerate.classList.remove('active');
+                tabExplorer.classList.add('active');
+                viewGenerate.classList.add('hidden');
+                viewExplorer.classList.remove('hidden');
+                loadExplorer();
+            }
+        }
+
+        tabGenerate.addEventListener('click', () => switchTab('generate'));
+        tabExplorer.addEventListener('click', () => switchTab('explorer'));
+
+
+        // GENERATOR LOGIC
+        const generateBtn = document.getElementById('generateBtn');
+        const genBtnText = document.getElementById('genBtnText');
+        const genBtnSpinner = document.getElementById('genBtnSpinner');
+        const genBtnIcon = document.getElementById('genBtnIcon');
+
+        const emptyState = document.getElementById('emptyState');
+        const resultState = document.getElementById('resultState');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const resultLabel = document.getElementById('resultLabel');
+        const saveBtn = document.getElementById('saveBtn');
+        const saveStatus = document.getElementById('saveStatus');
+
+        let currentAudioBase64 = null;
+
+        generateBtn.addEventListener('click', async () => {
+            const text = document.getElementById('inputText').value;
+            const voice = document.getElementById('voiceImg').value;
+            const emotion = document.getElementById('emotion').value;
+            const instructions = document.getElementById('systemInstructions').value;
+
+            if (!text) {
+                alert("Please enter some text");
+                return;
+            }
+
+            // Set Loading State
+            generateBtn.disabled = true;
+            genBtnText.textContent = "Generating...";
+            genBtnSpinner.classList.remove('hidden');
+            genBtnIcon.classList.add('hidden');
+            saveStatus.textContent = "";
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text: text,
+                        voice_name: voice,
+                        system_instructions: `Emotion: ${emotion}. ${instructions}`
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                if (data.audio_base64) {
+                    currentAudioBase64 = data.audio_base64;
+                    const audioSrc = `data:audio/mp3;base64,${data.audio_base64}`;
+                    audioPlayer.src = audioSrc;
+
+                    emptyState.classList.add('hidden');
+                    resultState.classList.remove('hidden');
+                    resultLabel.textContent = `${voice} • ${emotion}`;
+
+                    // Reset save button styling just in case
+                    saveBtn.classList.remove('bg-emerald-600', 'border-emerald-500');
+                    saveBtn.innerHTML = `
+                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        Save to Kaggle Dataset
+                    `;
+                    saveStatus.textContent = "";
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("Generation failed: " + err.message);
+            } finally {
+                generateBtn.disabled = false;
+                genBtnText.textContent = "Generate Audio";
+                genBtnSpinner.classList.add('hidden');
+                genBtnIcon.classList.remove('hidden');
+            }
+        });
+
+        saveBtn.addEventListener('click', async () => {
+            if (!currentAudioBase64) return;
+
+            const text = document.getElementById('inputText').value;
+            const voice = document.getElementById('voiceImg').value;
+            const emotion = document.getElementById('emotion').value;
+            const instructions = document.getElementById('systemInstructions').value;
+
+            // Set saving state
+            saveBtn.disabled = true;
+            saveStatus.textContent = "Saving...";
+            saveStatus.className = "h-6 text-sm text-center text-slate-400";
+
+            try {
+                const response = await fetch('/api/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        audio_base64: currentAudioBase64,
+                        metadata: {
+                            text: text,
+                            voice: voice,
+                            emotion: emotion,
+                            instructions: instructions,
+                            model: 'gemini-2.5-pro-preview-tts' // Metadata tag
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+
+                // Success State
+                saveStatus.textContent = "Saved to dataset successfully!";
+                saveStatus.className = "h-6 text-sm text-center text-emerald-400";
+
+                // Visual feedback on button
+                saveBtn.classList.add('bg-emerald-600', 'border-emerald-500');
+                saveBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Saved!
+                `;
+
+            } catch (err) {
+                console.error(err);
+                saveStatus.textContent = "Error saving: " + err.message;
+                saveStatus.className = "h-6 text-sm text-center text-red-400";
+            } finally {
+                saveBtn.disabled = false;
+            }
+        });
+
+        // EXPLORER LOGIC
+        const explorerGrid = document.getElementById('explorerGrid');
+        const explorerLoading = document.getElementById('explorerLoading');
+        const explorerEmpty = document.getElementById('explorerEmpty');
+        const refreshExplorerBtn = document.getElementById('refreshExplorer');
+
+        refreshExplorerBtn.addEventListener('click', loadExplorer);
+
+        async function loadExplorer() {
+            explorerGrid.innerHTML = '';
+            explorerLoading.classList.remove('hidden');
+            explorerEmpty.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/list_recordings');
+                const files = await res.json();
+
+                explorerLoading.classList.add('hidden');
+
+                if (files.length === 0) {
+                    explorerEmpty.classList.remove('hidden');
+                    return;
+                }
+
+                const template = document.getElementById('explorerItemTemplate');
+
+                files.forEach(file => {
+                    const clone = template.content.cloneNode(true);
+                    const meta = file.metadata;
+
+                    clone.querySelector('.voice-badge').textContent = meta.voice || '?';
+                    clone.querySelector('.emotion-badge').textContent = meta.emotion || '?';
+
+                    // Simple timestamp format
+                    const ts = meta.timestamp || '';
+                    if (ts.length >= 15) {
+                        // 20241210_204500 -> 20:45
+                        const formatted = `${ts.substring(9, 11)}:${ts.substring(11, 13)}`;
+                        clone.querySelector('.timestamp-text').textContent = formatted;
+                    }
+
+                    clone.querySelector('.text-preview').textContent = meta.text || 'No text';
+                    clone.querySelector('audio').src = `/kaggle_dataset/${file.filename}`;
+
+                    explorerGrid.appendChild(clone);
+                });
+
+            } catch (err) {
+                console.error(err);
+                explorerLoading.textContent = "Error loading files.";
+            }
+        }
+    </script>
+</body>
+
+</html>
